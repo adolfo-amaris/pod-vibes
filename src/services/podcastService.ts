@@ -25,7 +25,7 @@ export const fetchTopPodcasts = async () => {
 		throw error;
 
 	}
-	
+
 };
 
 // Función para obtener los detalles de un podcast específico
@@ -44,7 +44,7 @@ export const fetchPodcastDetails = async (podcastId: string) => {
 		console.error('Error al obtener los detalles del podcast:', error);
 		throw error;
 	}
-	
+
 };
 
 export const fetchTopPodcastsWithCache = async () => {
@@ -61,7 +61,7 @@ export const fetchTopPodcastsWithCache = async () => {
 		const isCacheValid =
 			Date.now() - parseInt(cachedTimestamp, 10) < cacheDuration;
 		if (isCacheValid) {
-			console.log('Cargando datos desde el caché');
+			// console.log('Cargando datos desde el caché', JSON.parse(cachedData));
 			return JSON.parse(cachedData);
 		}
 	}
@@ -106,5 +106,5 @@ export const fetchPodcastDetailsWithCache = async (podcastId: string) => {
 	localStorage.setItem(cacheTimestampKey, Date.now().toString());
 
 	return data;
-	
+
 };
