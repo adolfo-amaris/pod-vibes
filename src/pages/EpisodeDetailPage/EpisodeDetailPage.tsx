@@ -1,78 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { fetchPodcastDetailsWithCache } from '../../services/podcastService';
-import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
+import React from 'react';
+import { useNavigation } from '../../context/NavigationContext';
 
 const EpisodeDetailPage: React.FC = () => {
-  const { podcastId, episodeId } = useParams<{ podcastId: string; episodeId: string }>();
-  const [episode, setEpisode] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  // Obtiene el episodio seleccionado desde el contexto de navegación
+  const { selectedEpisode, setSelectedEpisode } = useNavigation();
 
-  useEffect(() => {
-    const loadEpisodeDetails = async () => {
-      try {
-        setLoading(true);
-        setError(false);
-        const podcastData = await fetchPodcastDetailsWithCache(podcastId!);
-        const foundEpisode = podcastData.episodes.find((ep: any) => ep.trackId === Number(episodeId));
-        if (!foundEpisode) {
-          throw new Error('Episodio no encontrado');
-        }
-        setEpisode(foundEpisode);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error al cargar el episodio:', error);
-        setError(true);
-        setLoading(false);
-      }
-    };
-
-    loadEpisodeDetails();
-  }, [podcastId, episodeId]);
-
-  if (loading) {
-    return <LoadingIndicator />;
-  }
-
-  if (error || !episode) {
+  // Si no hay un episodio seleccionado, muestra un mensaje o retorna a los episodios
+  if (!selectedEpisode) {
     return (
       <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <p>Error al cargar los detalles del episodio. Por favor, inténtalo de nuevo más tarde.</p>
+        <p>No se seleccionó ningún episodio. Por favor, vuelve a la lista de episodios.</p>
+        <button
+          onClick={() => setSelectedEpisode(null)} // Permite regresar a la lista de episodios
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            backgroundColor: '#007BFF',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Volver
+        </button>
       </div>
     );
   }
 
   return (
-    <div style={containerStyle}>
-      <h1>{episode.trackName}</h1>
-      <p style={dateStyle}>Fecha de publicación: {new Date(episode.releaseDate).toLocaleDateString()}</p>
-      <div style={descriptionStyle} dangerouslySetInnerHTML={{ __html: episode.description }}></div>
-      <audio controls style={audioStyle}>
-        <source src={episode.episodeUrl} type="audio/mpeg" />
+    <div style={{ padding: '20px' }}>
+      {/* Título del episodio */}
+      <h1>{selectedEpisode.trackName}</h1>
+
+      {/* Fecha de publicación */}
+      <p style={{ color: '#666', marginBottom: '10px' }}>
+        Fecha de publicación: {new Date(selectedEpisode.releaseDate).toLocaleDateString()}
+      </p>
+
+      {/* Descripción del episodio */}
+      <div
+        style={{ marginBottom: '20px', lineHeight: '1.6' }}
+        dangerouslySetInnerHTML={{ __html: selectedEpisode.description }}
+      ></div>
+
+      {/* Reproductor de audio */}
+      <audio controls style={{ width: '100%' }}>
+        <source src={selectedEpisode.episodeUrl} type="audio/mpeg" />
         Tu navegador no soporta el reproductor de audio.
       </audio>
+
+      {/* Botón para regresar a la lista de episodios */}
+      <button
+        onClick={() => setSelectedEpisode(null)}
+        style={{
+          marginTop: '20px',
+          padding: '10px 20px',
+          fontSize: '16px',
+          backgroundColor: '#007BFF',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+        }}
+      >
+        Volver a episodios
+      </button>
     </div>
   );
-};
-
-// Estilos del componente
-const containerStyle = {
-  padding: '20px',
-};
-
-const dateStyle = {
-  color: '#666',
-  marginBottom: '10px',
-};
-
-const descriptionStyle = {
-  marginBottom: '20px',
-  lineHeight: '1.6',
-};
-
-const audioStyle = {
-  width: '100%',
 };
 
 export default EpisodeDetailPage;
