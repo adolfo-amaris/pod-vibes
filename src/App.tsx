@@ -17,6 +17,7 @@ const App: React.FC = () => {
         <Header />
 
         <Routes>
+
           {/* Ruta para la página principal */}
           <Route path="/" element={<HomePage />} />
 
@@ -24,14 +25,12 @@ const App: React.FC = () => {
           <Route path="/podcast/:podcastId" element={<PodcastDetailPage />} />
 
           {/* Ruta para el detalle de un episodio */}
-          <Route
-            path="/podcast/:podcastId/episode/:episodeId"
-            element={<EpisodeDetailPage />}
-          />
+          <Route path="/podcast/:podcastId/episode/:episodeId" element={<EpisodeDetailPage />} />  
+                  
         </Routes>
 
       </LoadingProvider>
-      
+
     </Router>
   );
 };

@@ -36,13 +36,26 @@ export const fetchPodcastDetails = async (podcastId: string) => {
 		const response = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`);
 		const data = JSON.parse(response.data.contents);
 
+		console.log('Respuesta del API para detalles del podcast:', data);
+
+
 		return {
+
 			details: data.results[0], // Detalle del podcast
-			episodes: data.results.slice(1), // Episodios
+			episodes: data.results.slice(1).map((episode: any) => ({
+				trackId: episode.trackId,
+				trackName: episode.trackName,
+				description: episode.description,
+				releaseDate: episode.releaseDate,
+				episodeUrl: episode.episodeUrl,
+			})),
+
 		};
 	} catch (error) {
+
 		console.error('Error al obtener los detalles del podcast:', error);
 		throw error;
+
 	}
 
 };
@@ -58,12 +71,14 @@ export const fetchTopPodcastsWithCache = async () => {
 	const cachedTimestamp = localStorage.getItem(cacheTimestampKey);
 
 	if (cachedData && cachedTimestamp) {
+
 		const isCacheValid =
 			Date.now() - parseInt(cachedTimestamp, 10) < cacheDuration;
 		if (isCacheValid) {
 			// console.log('Cargando datos desde el caché', JSON.parse(cachedData));
 			return JSON.parse(cachedData);
 		}
+		
 	}
 
 	// Si no hay caché o es inválido, hacer la solicitud
