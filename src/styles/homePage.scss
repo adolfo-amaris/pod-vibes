@@ -1,9 +1,17 @@
 .boxppal {
 
+    .boxppal__card{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+        width: 80%;
+        margin: 3% auto;
+    }
+
+
     .boxppal__input {
         margin: 20px 30px;
         padding: 10px;
         width: 20%;
     }
-    
+
 }
