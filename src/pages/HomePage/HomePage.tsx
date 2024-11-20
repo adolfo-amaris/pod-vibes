@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { fetchTopPodcastsWithCache } from '../../services/podcastService';
 import Card from '../../components/Card/Card';
-import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
+import './../../styles/homePage.scss';
+import { useLoading } from '../../context/LoadingContext';
 import { useNavigation } from '../../context/NavigationContext';
 import PodcastDetailPage from '../PodcastDetailPage/PodcastDetailPage';
 
@@ -10,15 +11,28 @@ const HomePage: React.FC = () => {
 	const { setSelectedPodcast, selectedPodcast } = useNavigation();
 	const [filter, setFilter] = useState('');
 	const [filteredPodcasts, setFilteredPodcasts] = useState<any[]>([]);
+	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 
 	useEffect(() => {
+
 		const loadPodcasts = async () => {
+
+		try {
+			setLoading(true);
 			const data = await fetchTopPodcastsWithCache();
 			setPodcasts(data);
 			setFilteredPodcasts(data);
+		  } catch (error) {
+			console.error('Error al cargar el listado podcasts:', error);
+		  } finally {
+			setLoading(false);
+		  }
+	
 		};
+		
 		loadPodcasts();
-	}, []);
+
+	}, [setLoading]);
 
 	useEffect(() => {
 		const lowercasedFilter = filter.toLowerCase();
@@ -30,20 +44,20 @@ const HomePage: React.FC = () => {
 		setFilteredPodcasts(filtered);
 	}, [filter, podcasts]);
 
+
 	// Renderiza el detalle del podcast si hay uno seleccionado
 	if (selectedPodcast) {
 		return <PodcastDetailPage />;
 	}
 
 	return (
-		<div>
-			<h1>Podcasts más populares</h1>
+		<div className='boxppal flex flex-column'>
 			<input
 				type="text"
-				placeholder="Buscar podcasts por título o autor..."
+				placeholder="Filter podcasts..."
 				value={filter}
-				onChange={(e) => setFilter(e.target.value)}
-				style={{ margin: '20px 0', padding: '10px', width: '100%' }}
+				onChange={(e) => setFilter(e.target.value)}				
+				className='boxppal__input align-self-end'
 			/>
 			{filteredPodcasts.length > 0 ? (
 				<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>

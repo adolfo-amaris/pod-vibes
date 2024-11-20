@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPodcastDetailsWithCache } from '../../services/podcastService';
-import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
 import { useNavigation } from '../../context/NavigationContext';
+import { useLoading } from '../../context/LoadingContext';
 import EpisodeDetailPage from '../EpisodeDetailPage/EpisodeDetailPage';
 
 const PodcastDetailPage: React.FC = () => {
   // Contexto de navegación para gestionar el podcast y episodio seleccionados
   const { selectedPodcast, setSelectedPodcast, selectedEpisode, setSelectedEpisode } = useNavigation();
   const [podcast, setPodcast] = useState<any>(null); // Estado para almacenar los detalles del podcast
-  const [loading, setLoading] = useState(true); // Estado de carga para mostrar el indicador
+  const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 
   // Efecto para cargar los detalles del podcast al montar el componente
   useEffect(() => {
@@ -32,15 +32,11 @@ const PodcastDetailPage: React.FC = () => {
       loadPodcastDetails();
     }
 
-  }, [selectedPodcast]);
+  }, [selectedPodcast, loading]);
 
-  // Si está cargando, muestra el indicador de carga
-  if (loading) {
-    return <LoadingIndicator />;
-  }
 
   // Si no se pudo cargar el podcast, muestra un mensaje de error
-  if (!podcast) {
+  if (!podcast && !loading) {
 
     return (
       <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -61,20 +57,25 @@ const PodcastDetailPage: React.FC = () => {
         </button>
       </div>
     );
-    
+
   }
+
+  if (!podcast || !podcast.episodes) {
+    return <p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando detalles del podcast...</p>;
+  }
+
+  // Función para formatear la duración de los episodios
+  const formatDuration = (millis: number) => {
+    if (!millis) return "Duración no disponible"; // Maneja el caso cuando millis es undefined
+    const minutes = Math.floor(millis / 60000);
+    const seconds = ((millis % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds.padStart(2, '0')}`;
+  };
 
   // Si hay un episodio seleccionado, renderiza el detalle del episodio
   if (selectedEpisode) {
     return <EpisodeDetailPage />;
   }
-
-  // Función para formatear la duración de los episodios
-  const formatDuration = (millis: number) => {
-    const minutes = Math.floor(millis / 60000);
-    const seconds = ((millis % 60000) / 1000).toFixed(0);
-    return `${minutes}:${seconds.padStart(2, '0')}`;
-  };
 
   // Renderiza el detalle del podcast y la lista de episodios
   return (

@@ -1,0 +1,25 @@
+.loading-indicator {
+    width: 15px;
+    height: 15px;
+    background-color: vars.$c-primary;
+    border-radius: 50%;
+    animation: loading-pulse 1.5s infinite;
+
+    /* Crea un efecto de pulsación */
+    @keyframes loading-pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.5);
+            opacity: 0.5;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+}
