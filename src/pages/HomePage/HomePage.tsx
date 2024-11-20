@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
 				className='boxppal__input align-self-end'
 			/>
 			{filteredPodcasts.length > 0 ? (
-				<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
+				<div className='boxppal__card'>
 					{filteredPodcasts.map((podcast) => (
 						<Card
 							key={podcast.id}
