@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { log } from 'console';
 
 const BASE_URL = 'https://itunes.apple.com';
 const PROXY_URL = 'https://api.allorigins.win/get?url='; // Proxy para manejar CORS
@@ -12,11 +13,15 @@ export const fetchTopPodcasts = async () => {
 		const response = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`);
 		const data = JSON.parse(response.data.contents);
 
+		console.log('Esto es data de top podcast', data.feed);
+		
+
 		return data.feed.entry.map((podcast: any) => ({
 			id: podcast.id.attributes['im:id'],
 			title: podcast['im:name'].label,
 			author: podcast['im:artist'].label,
 			image: podcast['im:image'][2].label,
+			description: podcast['summary'].label
 		}));
 
 	} catch (error) {
@@ -36,8 +41,9 @@ export const fetchPodcastDetails = async (podcastId: string) => {
 		const response = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`);
 		const data = JSON.parse(response.data.contents);
 
-		console.log('Respuesta del API para detalles del podcast:', data);
-
+		console.log('responseee data..... ', response.data);
+		
+	
 
 		return {
 
