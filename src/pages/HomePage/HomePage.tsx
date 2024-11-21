@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { fetchTopPodcastsWithCache } from '../../services/podcastService';
 import Card from '../../components/Card/Card';
-import './../../styles/homePage.scss';
 import { useLoading } from '../../context/LoadingContext';
 import { useNavigation } from '../../context/NavigationContext';
 import PodcastDetailPage from '../PodcastDetailPage/PodcastDetailPage';
+import './../../styles/homePage.scss';
 
 const HomePage: React.FC = () => {
 	const [podcasts, setPodcasts] = useState<any[]>([]);
@@ -67,12 +67,12 @@ const HomePage: React.FC = () => {
 							image={podcast.image}
 							title={podcast.title}
 							author={podcast.author}
-							onClick={() => setSelectedPodcast(podcast.id)}
+							onClick={() => setSelectedPodcast(podcast)}
 						/>
 					))}
 				</div>
 			) : (
-				<p>No se encontraron resultados.</p>
+				<p className='boxppal__not-found' >No se encontraron resultados.</p>
 			)}
 		</div>
 	);

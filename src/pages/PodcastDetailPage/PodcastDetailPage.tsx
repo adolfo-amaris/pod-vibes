@@ -3,141 +3,178 @@ import { fetchPodcastDetailsWithCache } from '../../services/podcastService';
 import { useNavigation } from '../../context/NavigationContext';
 import { useLoading } from '../../context/LoadingContext';
 import EpisodeDetailPage from '../EpisodeDetailPage/EpisodeDetailPage';
+import './../../styles/podcastDetailPage.scss';
 
 const PodcastDetailPage: React.FC = () => {
-  // Contexto de navegación para gestionar el podcast y episodio seleccionados
-  const { selectedPodcast, setSelectedPodcast, selectedEpisode, setSelectedEpisode } = useNavigation();
-  const [podcast, setPodcast] = useState<any>(null); // Estado para almacenar los detalles del podcast
-  const { loading, setLoading } = useLoading(); // Uso del estado global de carga
-
-  // Efecto para cargar los detalles del podcast al montar el componente
-  useEffect(() => {
-
-    const loadPodcastDetails = async () => {
-
-      try {
-        setLoading(true);
-        const data = await fetchPodcastDetailsWithCache(selectedPodcast!); // Llama al servicio para obtener los detalles
-        setPodcast(data); // Guarda los datos del podcast en el estado
-        console.log('Detalles del podcast:', data);
-      } catch (error) {
-        console.error('Error al cargar los detalles del podcast:', error);
-      } finally {
-        setLoading(false);
-      }
-
-    };
-
-    if (selectedPodcast) {
-      loadPodcastDetails();
-    }
-
-  }, [selectedPodcast, loading]);
+	// Contexto de navegación para gestionar el podcast y episodio seleccionados
+	const { selectedPodcast, setSelectedPodcast, selectedEpisode, setSelectedEpisode } = useNavigation();
+	const [podcast, setPodcast] = useState<any>(null); // Estado para almacenar los detalles del podcast
+	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 
 
-  // Si no se pudo cargar el podcast, muestra un mensaje de error
-  if (!podcast && !loading) {
 
-    return (
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <p>Error al cargar los detalles del podcast. Por favor, inténtalo de nuevo más tarde.</p>
-        <button
-          onClick={() => setSelectedPodcast(null)} // Permite volver al listado de podcasts
-          style={{
-            padding: '10px 20px',
-            fontSize: '16px',
-            backgroundColor: '#007BFF',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          Volver
-        </button>
-      </div>
-    );
+	// Efecto para cargar los detalles del podcast al montar el componente
+	useEffect(() => {
+		
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  }
+		const loadPodcastDetails = async () => {
 
-  if (!podcast || !podcast.episodes) {
-    return <p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando detalles del podcast...</p>;
-  }
+			if (!selectedPodcast) {
+				console.error('No hay un podcast seleccionado');
+				return;
+			}
 
-  // Función para formatear la duración de los episodios
-  const formatDuration = (millis: number) => {
-    if (!millis) return "Duración no disponible"; // Maneja el caso cuando millis es undefined
-    const minutes = Math.floor(millis / 60000);
-    const seconds = ((millis % 60000) / 1000).toFixed(0);
-    return `${minutes}:${seconds.padStart(2, '0')}`;
-  };
+			try {
+				setLoading(true);
+				const data = await fetchPodcastDetailsWithCache(selectedPodcast.id); // Llama al servicio para obtener los detalles
+				setPodcast(data); // Guarda los datos del podcast en el estado
+			} catch (error) {
+				console.error('Error al cargar los detalles del podcast:', error);
+			} finally {
+				setLoading(false);
+			}
 
-  // Si hay un episodio seleccionado, renderiza el detalle del episodio
-  if (selectedEpisode) {
-    return <EpisodeDetailPage />;
-  }
+		};
 
-  // Renderiza el detalle del podcast y la lista de episodios
-  return (
-    <div style={{ padding: '20px' }}>
-      {/* Detalles del podcast */}
-      <div style={{ marginBottom: '20px' }}>
-        <img
-          src={podcast.details.artworkUrl600}
-          alt={podcast.details.collectionName}
-          style={{ maxWidth: '300px', marginBottom: '20px' }}
-        />
-        <h1>{podcast.details.collectionName}</h1>
-        <h2 style={{ color: '#666' }}>{podcast.details.artistName}</h2>
-        <p>{podcast.details.description || 'No hay descripción disponible.'}</p>
-      </div>
+		if (selectedPodcast) {
+			loadPodcastDetails();
+		}
 
-      {/* Lista de episodios */}
-      <div>
-        <h3>Episodios</h3>
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {podcast.episodes.map((episode: any) => (
-            <li
-              key={episode.trackId}
-              style={{
-                padding: '10px 0',
-                borderBottom: '1px solid #ddd',
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                console.log('Episodio seleccionado:', episode); // Debug: valida el episodio seleccionado
-                setSelectedEpisode(episode); // Guarda el episodio seleccionado en el contexto
-              }}
-            >
-              <div>
-                <p style={{ fontWeight: 'bold', marginBottom: '5px' }}>{episode.trackName}</p>
-                <small style={{ color: '#666' }}>
-                  Duración: {formatDuration(episode.trackTimeMillis)}
-                </small>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+	}, [selectedPodcast, loading]);
 
-      {/* Botón para volver al listado de podcasts */}
-      <button
-        onClick={() => setSelectedPodcast(null)}
-        style={{
-          marginTop: '20px',
-          padding: '10px 20px',
-          fontSize: '16px',
-          backgroundColor: '#007BFF',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-        }}
-      >
-        Volver a podcasts
-      </button>
-    </div>
-  );
+	console.log('Detalles del podcast:.... ', podcast, selectedPodcast);
+
+
+	// Si no se pudo cargar el podcast, muestra un mensaje de error
+	if (!podcast && !loading) {
+
+		return (
+			<div style={{ textAlign: 'center', marginTop: '20px' }}>
+				<p>Error al cargar los detalles del podcast. Por favor, inténtalo de nuevo más tarde.</p>
+				<button
+					onClick={() => setSelectedPodcast(null)} // Permite volver al listado de podcasts
+					style={{
+						padding: '10px 20px',
+						fontSize: '16px',
+						backgroundColor: '#007BFF',
+						color: '#fff',
+						border: 'none',
+						borderRadius: '4px',
+						cursor: 'pointer',
+					}}
+				>
+					Volver
+				</button>
+			</div>
+		);
+
+	}
+
+	if (!podcast || !podcast.episodes || !selectedPodcast) {
+		return <p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando detalles del podcast...</p>;
+	}
+
+	// Función para formatear la duración de los episodios
+	const formatDuration = (millis: number) => {
+		if (!millis) return "Duración no disponible"; // Maneja el caso cuando millis es undefined
+		const minutes = Math.floor(millis / 60000);
+		const seconds = ((millis % 60000) / 1000).toFixed(0);
+		return `${minutes}:${seconds.padStart(2, '0')}`;
+	};
+
+
+	// Renderiza el detalle del podcast y la lista de episodios
+	return (
+		<div className='boxdetail flex'>
+
+
+
+			{/* Detalles del podcast */}
+			<div className='boxdetail__container boxstyles'>
+				{/* Botón para volver al listado de podcasts */}
+				<button
+					onClick={() => setSelectedPodcast(null)}
+					style={{
+						marginTop: '20px',
+						padding: '10px 20px',
+						fontSize: '16px',
+						backgroundColor: '#007BFF',
+						color: '#fff',
+						border: 'none',
+						borderRadius: '4px',
+						cursor: 'pointer',
+					}}
+				>
+					Volver a podcasts
+				</button>
+
+				<div className='boxdetail__boxpodcast flex flex-column'>
+					<img
+						className='boxpodcast_img'
+						src={podcast.details.artworkUrl600}
+						alt={podcast.details.collectionName}
+
+					/>
+					<hr />
+
+					<div className='boxpodcast_name'>
+						<h1>{selectedPodcast.title}</h1>
+						<h3>by {selectedPodcast.author}</h3>
+					</div>
+
+					<hr />
+
+					<p className='boxpodcast_description'>
+						<span>Description:</span>
+						<br />
+						<br />
+						{selectedPodcast.description || 'No hay descripción disponible.'}
+					</p>
+				</div>
+			</div>
+
+			{/* Lista de episodios */}
+
+
+			{
+				selectedEpisode ? (
+					<EpisodeDetailPage />
+				): (
+					<div className='boxepisode__list'>
+
+						<h1 className="container__title boxstyles">Episodes: {podcast.episodes.length}</h1>
+						<div className="episodes boxstyles">
+
+							<div className="episodes__card">
+								<div className="episodes__card-title">Title</div>
+								<div className="episodes__card-date">Date</div>
+								<div className="episodes__card-duration">Duration</div>
+							</div>
+
+							{podcast.episodes.map((episode: any) => (
+								<div
+									className="episodes__card effects boxstyles"
+									key={episode.trackId}
+									onClick={() => {
+										setSelectedEpisode(episode); // Guarda el episodio seleccionado en el contexto
+									}}
+								>
+									<div className="episodes__card-title">{episode.trackName}</div>
+									<div className="episodes__card-date">1/3/2016</div>
+									<div className="episodes__card-duration">{formatDuration(episode.trackTimeMillis)}</div>
+								</div>
+							))}
+
+						</div>
+
+					</div>
+				) 
+			}
+			
+
+		</div>
+	);
 };
 
 export default PodcastDetailPage;

@@ -1,0 +1,162 @@
+.boxdetail {
+    display: grid;
+    grid-template-columns: 25% 70%;
+    gap: 5%;
+    width: 95%;
+    margin: 0 auto;
+
+
+
+    .boxdetail__container {
+        position: sticky;
+        top: 60px;
+        height: calc(80vh - -30px);
+        padding: 16px;
+        text-align: center;
+        box-shadow: vars.$box-shadow;
+        margin: 15px;
+
+
+
+        h2 {
+            color: vars.$c-secondary
+        }
+
+
+        .boxdetail__boxpodcast {
+            text-align: left;
+
+            hr {
+                width: 90%;
+                border: solid 0.5px #f7f7f7;
+            }
+
+
+            .boxpodcast_img {
+                max-width: 75%;
+                margin: 20px auto;
+                border-radius: 8px;
+                text-align: center;
+            }
+
+            .boxpodcast_name {
+                padding: 0px 20px;
+
+                h1 {
+                    margin-bottom: 0;
+                    font-size: 1.4vw;
+                }
+
+                h3 {
+                    color: vars.$c-tertiary;
+                    margin-top: 0;
+                    font-style: italic;
+                    font-size: 1vw;
+                }
+            }
+
+            .boxpodcast_description {
+                margin-bottom: 5px;
+                font-style: italic;
+                font-size: 0.8vw;
+                word-wrap: break-word;
+                height: calc(20vh + 30px);
+                overflow-y: auto;
+        
+
+                span {
+                    font-weight: vars.$font-weight-bold;
+                }
+            }
+
+
+        }
+
+        @media (max-width:768px) {
+            position: relative;
+            height: calc(80vh + 195px);
+        }
+
+
+    }
+
+    .boxepisode__list {
+        // width: 60%;
+
+
+        .container__title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+
+        .episodes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 30px;
+
+            .episodes__card {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                padding: 15px;
+                background-color: #f4f4f4;
+                border-radius: 8px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                cursor: pointer;
+
+                &:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+                }
+
+                .episodes__card-title {
+                    flex: 1 1 60%;
+                    font-weight: bold;
+                    color: vars.$c-primary;
+                    font-weight: vars.$font-weight-medium;
+                }
+
+                .episodes__card-date,
+                .episodes__card-duration {
+                    flex: 1 1 calc(20% - 10px);
+                    color: #666;
+                    text-align: right;
+                }
+
+            }
+
+
+
+
+
+
+        }
+
+
+        @media (max-width: 600px) {
+            .episodes__card {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .episodes__card-title,
+            .episodes__card-date,
+            .episodes__card-duration {
+                flex: 1 1 100%;
+                text-align: left;
+            }
+        }
+
+    }
+
+    @media (max-width:768px) {
+        grid-template-columns: 1fr;
+    }
+
+
+
+}

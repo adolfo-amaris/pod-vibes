@@ -5,7 +5,30 @@ body {
     font-size: vars.$font-size-generic;
 }
 
+*::-webkit-scrollbar {
+    width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: vars.$bg-secondary;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: vars.$c-primary;
+    border-radius: 20px;
+    border: 3px solid vars.$bg-secondary;
+}
+
 // #region Custom Flex
+
+
+:is(.boxstyles) {
+    border: 1px solid vars.$bg-secondary;
+    box-shadow: vars.$box-shadow;
+    border-radius: 8px;
+}
+
+
 
 :is(.flex, .flex-column, .flex-center, .flex-space-between) {
     display: flex;
@@ -25,14 +48,14 @@ body {
 }
 
 .justify-between {
-    justify-content: space-between;    
+    justify-content: space-between;
 }
 
 .justify-content-center {
-    justify-content: center;    
+    justify-content: center;
 }
 
-.align-self-end{
+.align-self-end {
     align-self: flex-end;
 }
 
