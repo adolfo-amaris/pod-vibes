@@ -1,6 +1,6 @@
 {
-  "name": "pod-vibes",
-  "version": "0.1.0",
+  "name": "podcaster",
+  "version": "3.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.3",
