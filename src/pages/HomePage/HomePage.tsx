@@ -7,33 +7,35 @@ import PodcastDetailPage from '../PodcastDetailPage/PodcastDetailPage';
 import './../../styles/homePage.scss';
 
 const HomePage: React.FC = () => {
-	const [podcasts, setPodcasts] = useState<any[]>([]);
+	const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
+	const [podcasts, setPodcasts] = useState<any[]>(initialPodcasts);
 	const { setSelectedPodcast, selectedPodcast } = useNavigation();
 	const [filter, setFilter] = useState('');
-	const [filteredPodcasts, setFilteredPodcasts] = useState<any[]>([]);
+	const [filteredPodcasts, setFilteredPodcasts] = useState<any[]>(initialPodcasts);
 	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 
 	useEffect(() => {
 
 		const loadPodcasts = async () => {
 
-		try {
-			setLoading(true);
-			const data = await fetchTopPodcastsWithCache();
-			setPodcasts(data);
-			setFilteredPodcasts(data);
-		  } catch (error) {
-			console.error('Error al cargar el listado podcasts:', error);
-		  } finally {
-			setLoading(false);
-		  }
-	
+			try {
+				setLoading(true);
+				const data = await fetchTopPodcastsWithCache();
+				setPodcasts(data);
+				setFilteredPodcasts(data);
+				localStorage.setItem('podcasts', JSON.stringify(data));
+			} catch (error) {
+				console.error('Error al cargar el listado podcasts:', error);
+			} finally {
+				setLoading(false);
+			}
+
 		};
-		
+
 		loadPodcasts();
 
 	}, [setLoading]);
-
+	
 	useEffect(() => {
 		const lowercasedFilter = filter.toLowerCase();
 		const filtered = podcasts.filter(
@@ -51,7 +53,10 @@ const HomePage: React.FC = () => {
 	}
 
 	return (
-		<div className='boxppal flex flex-column'>
+		<div 
+			className='boxppal flex flex-column'
+			role="podcast-list"
+		>
 			<input
 				type="text"
 				placeholder="Filter podcasts..."
@@ -59,7 +64,7 @@ const HomePage: React.FC = () => {
 				onChange={(e) => setFilter(e.target.value)}				
 				className='boxppal__input align-self-end'
 			/>
-			{filteredPodcasts.length > 0 ? (
+			{filteredPodcasts && filteredPodcasts.length > 0 ? (
 				<div className='boxppal__card'>
 					{filteredPodcasts.map((podcast) => (
 						<Card

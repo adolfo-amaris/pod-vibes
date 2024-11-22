@@ -12,10 +12,7 @@ export const fetchTopPodcasts = async () => {
 		const url = `${BASE_URL}/us/rss/toppodcasts/limit=100/genre=1310/json`;
 		const response = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`);
 		const data = JSON.parse(response.data.contents);
-
-		console.log('Esto es data de top podcast', data.feed);
 		
-
 		return data.feed.entry.map((podcast: any) => ({
 			id: podcast.id.attributes['im:id'],
 			title: podcast['im:name'].label,
@@ -37,13 +34,10 @@ export const fetchTopPodcasts = async () => {
 export const fetchPodcastDetails = async (podcastId: string) => {
 
 	try {
+
 		const url = `${BASE_URL}/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`;
 		const response = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`);
-		const data = JSON.parse(response.data.contents);
-
-		console.log('responseee data..... ', response.data);
-		
-	
+		const data = JSON.parse(response.data.contents);	
 
 		return {
 
@@ -89,7 +83,6 @@ export const fetchTopPodcastsWithCache = async () => {
 	}
 
 	// Si no hay caché o es inválido, hacer la solicitud
-	console.log('Cargando datos desde el API');
 	const data = await fetchTopPodcasts();
 
 	// Guardar en caché
@@ -114,13 +107,11 @@ export const fetchPodcastDetailsWithCache = async (podcastId: string) => {
 		const isCacheValid =
 			Date.now() - parseInt(cachedTimestamp, 10) < cacheDuration;
 		if (isCacheValid) {
-			console.log(`Cargando detalles del podcast ${podcastId} desde el caché`);
 			return JSON.parse(cachedData);
 		}
 	}
 
 	// Si no hay caché o es inválido, hacer la solicitud
-	console.log(`Cargando detalles del podcast ${podcastId} desde el API`);
 	const data = await fetchPodcastDetails(podcastId);
 
 	// Guardar en caché

@@ -43,9 +43,6 @@ const PodcastDetailPage: React.FC = () => {
 
 	}, [selectedPodcast, loading]);
 
-	console.log('Detalles del podcast:.... ', podcast, selectedPodcast);
-
-
 	// Si no se pudo cargar el podcast, muestra un mensaje de error
 	if (!podcast && !loading) {
 
