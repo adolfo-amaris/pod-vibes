@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
 		loadPodcasts();
 
 	}, [setLoading]);
-	
+
 	useEffect(() => {
 		const lowercasedFilter = filter.toLowerCase();
 		const filtered = podcasts.filter(
@@ -53,17 +53,24 @@ const HomePage: React.FC = () => {
 	}
 
 	return (
-		<div 
+		<div
 			className='boxppal flex flex-column'
 			role="podcast-list"
 		>
-			<input
-				type="text"
-				placeholder="Filter podcasts..."
-				value={filter}
-				onChange={(e) => setFilter(e.target.value)}				
-				className='boxppal__input align-self-end'
-			/>
+			<div className="boxppal__search flex flex-center">
+				<div className="filter-count flex flex-center">
+					<span>{filteredPodcasts.length}</span>
+				</div>
+
+				<input
+					type="text"
+					placeholder="Filter podcasts..."
+					value={filter}
+					onChange={(e) => setFilter(e.target.value)}
+					className='boxppal__input align-self-end boxstyles'
+				/>
+			</div>
+
 			{filteredPodcasts && filteredPodcasts.length > 0 ? (
 				<div className='boxppal__card'>
 					{filteredPodcasts.map((podcast) => (
