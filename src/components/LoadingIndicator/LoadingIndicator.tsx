@@ -5,7 +5,13 @@ import './../../styles/LoadingIndicator.scss';
 const LoadingIndicator: React.FC = () => {
 
     return (
-        <div className="loading-indicator"></div>
+        <div 
+            className="loading-indicator"
+            role="status"
+            aria-live="polite"
+        >
+            
+        </div>
     );
 };
 

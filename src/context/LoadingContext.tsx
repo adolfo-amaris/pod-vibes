@@ -7,7 +7,7 @@ interface LoadingContextType {
 }
 
 // Crear el contexto con valores iniciales
-const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
+export const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
 // Hook para usar el contexto
 export const useLoading = () => {
