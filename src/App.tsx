@@ -10,18 +10,18 @@ import { NavigationProvider } from './context/NavigationContext';
 
 const App: React.FC = () => {
   return (
-    <Router 
-      future={{ 
+    <Router
+      future={{
         v7_relativeSplatPath: true,
         v7_startTransition: true,
       }}>
+      <NavigationProvider>
 
-      <LoadingProvider>
+        <LoadingProvider>
 
-        {/* El Header se muestra en todas las páginas */}
-        <Header />
+          {/* El Header se muestra en todas las páginas */}
+          <Header />
 
-        <NavigationProvider>
 
           <Routes>
 
@@ -29,16 +29,16 @@ const App: React.FC = () => {
             <Route path="/" element={<HomePage />} />
 
             {/* Ruta para el detalle de un podcast */}
-            <Route path="/podcast" element={<PodcastDetailPage />} />
+            <Route path="/podcast/:podcastId" element={<PodcastDetailPage />} />
 
             {/* Ruta para el detalle de un episodio */}
-            <Route path="/episode" element={<EpisodeDetailPage />} />
-                    
+            <Route path="/podcast/:podcastId/episode/:episodeId" element={<EpisodeDetailPage />} />
+
           </Routes>
 
-        </NavigationProvider>
+        </LoadingProvider>
+      </NavigationProvider>
 
-      </LoadingProvider>
 
     </Router>
   );

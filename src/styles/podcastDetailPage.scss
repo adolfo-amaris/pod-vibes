@@ -37,6 +37,11 @@
                 margin: 20px auto;
                 border-radius: 8px;
                 text-align: center;
+                cursor: pointer;
+
+                &:hover {
+                    box-shadow: vars.$box-shadow;
+                }
             }
 
             .boxpodcast_name {
@@ -93,38 +98,34 @@
 
 
         .episodes {
-            display: flex;
-            flex-direction: column;
             gap: 15px;
             padding: 30px;
 
             .episodes__card {
-                display: flex;
                 flex-wrap: wrap;
                 justify-content: space-between;
                 padding: 15px;
                 background-color: #f4f4f4;
                 border-radius: 8px;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-                cursor: pointer;
 
-                &:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-                }
 
                 .episodes__card-title {
                     flex: 1 1 60%;
-                    font-weight: bold;
                     color: vars.$c-primary;
                     font-weight: vars.$font-weight-medium;
+                    &.bold{
+                        font-weight: vars.$font-weight-bold;
+                    }
                 }
 
                 .episodes__card-date,
                 .episodes__card-duration {
                     flex: 1 1 calc(20% - 10px);
                     color: #666;
-                    text-align: right;
+                    text-align: center;
+                    &.bold{
+                        font-weight: vars.$font-weight-bold;
+                    }
                 }
 
             }
