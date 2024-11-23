@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigation } from '../../context/NavigationContext';
+import './../../styles/episodeDetailPage.scss';
+
 
 const EpisodeDetailPage: React.FC = () => {
   // Obtiene el episodio seleccionado desde el contexto de navegación
@@ -29,43 +31,26 @@ const EpisodeDetailPage: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className='boxepisode boxstyles'>
       {/* Título del episodio */}
       <h1>{selectedEpisode.trackName}</h1>
 
       {/* Fecha de publicación */}
-      <p style={{ color: '#666', marginBottom: '10px' }}>
+      <p>
         Fecha de publicación: {new Date(selectedEpisode.releaseDate).toLocaleDateString()}
       </p>
 
       {/* Descripción del episodio */}
       <div
-        style={{ marginBottom: '20px', lineHeight: '1.6' }}
+        className='boxepisode__description'        
         dangerouslySetInnerHTML={{ __html: selectedEpisode.description }}
       ></div>
 
       {/* Reproductor de audio */}
-      <audio controls style={{ width: '100%' }}>
+      <audio controls>
         <source src={selectedEpisode.episodeUrl} type="audio/mpeg" />
         Tu navegador no soporta el reproductor de audio.
       </audio>
-
-      {/* Botón para regresar a la lista de episodios */}
-      <button
-        onClick={() => setSelectedEpisode(null)}
-        style={{
-          marginTop: '20px',
-          padding: '10px 20px',
-          fontSize: '16px',
-          backgroundColor: '#007BFF',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-        }}
-      >
-        Volver a episodios
-      </button>
     </div>
   );
 };

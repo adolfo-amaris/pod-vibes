@@ -19,15 +19,30 @@ body {
     border: 3px solid vars.$bg-secondary;
 }
 
-// #region Custom Flex
 
-
-:is(.boxstyles) {
+// Efecto de sombra cajas
+.boxstyles{
     border: 1px solid vars.$bg-secondary;
     box-shadow: vars.$box-shadow;
     border-radius: 8px;
 }
 
+// Efecto hover
+.hoverEffect {
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+}
+
+
+
+// #region Custom Flex
 
 
 :is(.flex, .flex-column, .flex-center, .flex-space-between) {

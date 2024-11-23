@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { LoadingContext } from '../context/LoadingContext';
+import { NavigationProvider } from '../context/NavigationContext';
 import Header from '../components/Header/Header';
 
 describe('Header Component', () => {
@@ -12,9 +13,11 @@ describe('Header Component', () => {
                     v7_relativeSplatPath: true,
                     v7_startTransition: true,
                 }}>
-                <LoadingContext.Provider value={{ loading: false, setLoading: jest.fn() }}>
-                    <Header />
-                </LoadingContext.Provider>
+                <NavigationProvider>
+                    <LoadingContext.Provider value={{ loading: false, setLoading: jest.fn() }}>
+                        <Header />
+                    </LoadingContext.Provider>
+                </NavigationProvider>
             </BrowserRouter>
         );
 
@@ -29,9 +32,12 @@ describe('Header Component', () => {
                     v7_relativeSplatPath: true,
                     v7_startTransition: true,
                 }}>
-                <LoadingContext.Provider value={{ loading: true, setLoading: jest.fn() }}>
-                    <Header />
-                </LoadingContext.Provider>
+                <NavigationProvider>
+                    <LoadingContext.Provider value={{ loading: true, setLoading: jest.fn() }}>
+                        <Header />
+                    </LoadingContext.Provider>
+                </NavigationProvider>
+
             </BrowserRouter>
         );
 
@@ -46,9 +52,12 @@ describe('Header Component', () => {
                     v7_relativeSplatPath: true,
                     v7_startTransition: true,
                 }}>
-                <LoadingContext.Provider value={{ loading: false, setLoading: jest.fn() }}>
-                    <Header />
-                </LoadingContext.Provider>
+                <NavigationProvider>
+                    <LoadingContext.Provider value={{ loading: false, setLoading: jest.fn() }}>
+                        <Header />
+                    </LoadingContext.Provider>
+                </NavigationProvider>
+
             </BrowserRouter>
         );
 

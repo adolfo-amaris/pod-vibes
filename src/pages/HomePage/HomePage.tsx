@@ -47,46 +47,53 @@ const HomePage: React.FC = () => {
 	}, [filter, podcasts]);
 
 
+
 	// Renderiza el detalle del podcast si hay uno seleccionado
 	if (selectedPodcast) {
 		return <PodcastDetailPage />;
 	}
 
 	return (
-		<div
-			className='boxppal flex flex-column'
-			role="podcast-list"
-		>
-			<div className="boxppal__search flex flex-center">
-				<div className="filter-count flex flex-center">
-					<span>{filteredPodcasts.length}</span>
+
+		loading ? (
+			<p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando los podcast más populares...</p>
+		) : (
+			<div
+				className='boxppal flex flex-column'
+				role="podcast-list"
+			>
+				<div className="boxppal__search flex flex-center">
+					<div className="filter-count flex flex-center">
+						<span>{filteredPodcasts.length}</span>
+					</div>
+
+					<input
+						type="text"
+						placeholder="Filter podcasts..."
+						value={filter}
+						onChange={(e) => setFilter(e.target.value)}
+						className='boxppal__input align-self-end boxstyles'
+					/>
 				</div>
 
-				<input
-					type="text"
-					placeholder="Filter podcasts..."
-					value={filter}
-					onChange={(e) => setFilter(e.target.value)}
-					className='boxppal__input align-self-end boxstyles'
-				/>
+				{filteredPodcasts && filteredPodcasts.length > 0 ? (
+					<div className='boxppal__card'>
+						{filteredPodcasts.map((podcast) => (
+							<Card
+								key={podcast.id}
+								image={podcast.image}
+								title={podcast.title}
+								author={podcast.author}
+								onClick={() => setSelectedPodcast(podcast)}
+							/>
+						))}
+					</div>
+				) : (
+					<p className='boxppal__not-found' >No se encontraron resultados.</p>
+				)}
 			</div>
+		)
 
-			{filteredPodcasts && filteredPodcasts.length > 0 ? (
-				<div className='boxppal__card'>
-					{filteredPodcasts.map((podcast) => (
-						<Card
-							key={podcast.id}
-							image={podcast.image}
-							title={podcast.title}
-							author={podcast.author}
-							onClick={() => setSelectedPodcast(podcast)}
-						/>
-					))}
-				</div>
-			) : (
-				<p className='boxppal__not-found' >No se encontraron resultados.</p>
-			)}
-		</div>
 	);
 };
 

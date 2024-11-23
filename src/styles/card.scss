@@ -3,20 +3,12 @@
     height: 150px;
     padding: 16px;
     border-radius: 8px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
     text-align: center;
     margin: 20% auto;
     max-width: 80%;
     background-color: vars.$bg-primary;
     border: 1px solid vars.$bg-secondary;
     box-shadow: vars.$box-shadow;
-
-
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    }
     
     img {
         width: 45%;

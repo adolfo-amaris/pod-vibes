@@ -11,7 +11,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ image, title, author, onClick }) => {
     return (
-        <div className='card flex-column-center justify-content-center align-items' onClick={onClick}>
+        <div className='card flex-column-center justify-content-center align-items hoverEffect' onClick={onClick}>
             <img src={image} alt={title} />
             <div >
                 <h3 >{title}</h3>

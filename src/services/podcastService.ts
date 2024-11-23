@@ -38,7 +38,7 @@ export const fetchPodcastDetails = async (podcastId: string) => {
 		const url = `${BASE_URL}/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`;
 		const response = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`);
 		const data = JSON.parse(response.data.contents);	
-
+		console.log("Esto es data.... ", data);
 		return {
 
 			details: data.results[0], // Detalle del podcast
