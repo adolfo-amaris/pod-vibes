@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import HomePage from '../pages/HomePage/HomePage';
-import { fetchTopPodcastsWithCache } from '../services/podcastService';
+import { podcastService } from '../services/podcastService';
 import { LoadingProvider } from '../context/LoadingContext';
 import { NavigationProvider } from '../context/NavigationContext';
 
@@ -39,7 +39,7 @@ describe('HomePage Component', () => {
             value: localStorageMock,
         });
 
-        (fetchTopPodcastsWithCache as jest.Mock).mockResolvedValue(mockPodcasts);
+        jest.spyOn(podcastService, 'fetchTopPodcastsWithCache').mockResolvedValue(mockPodcasts);
     });
 
     it('renderiza correctamente la página inicial con datos de caché', async () => {
@@ -75,6 +75,6 @@ describe('HomePage Component', () => {
             );
         });
 
-        expect(fetchTopPodcastsWithCache).toHaveBeenCalled();
+        expect(podcastService.fetchTopPodcastsWithCache).toHaveBeenCalled();
     });
 });
