@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { fetchPodcastDetailsWithCache } from '../../services/podcastService';
+import { podcastService } from '../../services/podcastService';
 import { useNavigation } from '../../context/NavigationContext';
 import { useLoading } from '../../context/LoadingContext';
 import EpisodeDetailPage from '../EpisodeDetailPage/EpisodeDetailPage';
 import useHomeNavigation from '../../hook/useHomeNavigation';
+import Filter from '../../components/Filter/Filter';
+import { usePodcastFilter } from '../../hook/usePodcastFilter';
 import './../../styles/podcastDetailPage.scss';
 
 const PodcastDetailPage: React.FC = () => {
@@ -14,6 +16,10 @@ const PodcastDetailPage: React.FC = () => {
 	const { handleHomeClick } = useHomeNavigation();
 
 
+	// Reutilizamos el hook para manejar el filtro de episodios
+	const { filter, setFilter, filteredPodcasts: filteredEpisodes } = usePodcastFilter(
+		podcast?.episodes || []
+	);
 
 
 	// Efecto para cargar los detalles del podcast al montar el componente
@@ -30,7 +36,7 @@ const PodcastDetailPage: React.FC = () => {
 
 			try {
 				setLoading(true);
-				const data = await fetchPodcastDetailsWithCache(selectedPodcast.id); // Llama al servicio para obtener los detalles
+				const data = await podcastService.fetchPodcastDetailsWithCache(selectedPodcast.id);
 				setPodcast(data); // Guarda los datos del podcast en el estado
 			} catch (error) {
 				console.error('Error al cargar los detalles del podcast:', error);
@@ -45,6 +51,7 @@ const PodcastDetailPage: React.FC = () => {
 		}
 
 	}, [selectedPodcast, loading]);
+
 
 	// Si no se pudo cargar el podcast, muestra un mensaje de error
 	if (!podcast && !loading) {
@@ -139,7 +146,15 @@ const PodcastDetailPage: React.FC = () => {
 					) : (
 						<div className='boxepisode__list'>
 
-							<h1 className="container__title boxstyles">Episodes: {podcast.episodes.length}</h1>
+							<div className='boxepisode__header flex flex-center justify-between boxstyles'>
+								<h1 className="boxepisode__title">Episodes: {podcast.episodes.length}</h1>
+								<Filter
+									filter={filter}
+									setFilter={setFilter}
+									placeholder="Filter episodes..."
+									count={filteredEpisodes.length}
+								/>
+							</div>
 							<div className="episodes flex flex-column boxstyles">
 
 								<div className="episodes__card flex">
@@ -148,7 +163,7 @@ const PodcastDetailPage: React.FC = () => {
 									<div className="episodes__card-duration bold">Duration</div>
 								</div>
 
-								{podcast.episodes.map((episode: any) => (
+								{filteredEpisodes.map((episode: any) => (
 									<div
 										className="episodes__card flex hoverEffect boxstyles"
 										key={episode.trackId}

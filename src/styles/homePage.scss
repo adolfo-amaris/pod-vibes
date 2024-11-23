@@ -1,5 +1,11 @@
 .boxppal {
 
+    .boxfilter {
+        margin: 30px;
+    }
+
+
+
     .boxppal__card {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
@@ -7,34 +13,9 @@
         margin: 3% auto;
     }
 
-
-    .boxppal__input {
-        margin: 20px 30px;
-        padding: 15px 10px;
-        width: 20%;
-    }
-
     .boxppal__not-found {
         text-align: center;
     }
-
-    .boxppal__search {
-        justify-content: flex-end;
-
-        .filter-count {
-            font-size: 20px;
-            background-color: #2d62cb;
-            justify-content: center;
-            width: 45px;
-            height: 35px;
-            font-weight: vars.$font-weight-bold;
-            background-color: vars.$c-primary;
-            color: vars.$c-white;
-            border-radius: 8px;
-            padding: 0 5px;
-        }
-    }
-
 
 
 }
