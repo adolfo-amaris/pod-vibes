@@ -10,10 +10,10 @@ Podcaster es una aplicación desarrollada en React que permite a los usuarios ex
 - Características Principales
 - Decisiones de Diseño
 - Estructura del Proyecto
-- Instalación y Uso
 - Patrones y Principios Aplicados
 - Optimización
 - Pruebas Unitarias
+- Instalación y Uso
 - Próximos Pasos
 
 
@@ -27,7 +27,7 @@ Podcaster es una aplicación desarrollada en React que permite a los usuarios ex
 - Convención BEM para una estructura semántica y mantenible.
 - Construcción del Proyecto: Vite para un desarrollo rápido y ligero.
 
-### Pruebas:
+### Pruebas unitarias:
 - Jest y React Testing Library para pruebas unitarias y de integración.
 - Mocking de localStorage y servicios API.
 - Manejo de Caché: localStorage para optimizar la carga de datos y mejorar el rendimiento.
@@ -167,8 +167,8 @@ src/
 
 ### 1. Clona el repositorio:
 
-- git clone https://github.com/adolfo-amaris/pod-vibes
-- cd pod-vibes
+- git clone https://github.com/adolfo-amaris/podcaster
+- cd podcaster
 
 ### 2. Instala las dependencias:
 
