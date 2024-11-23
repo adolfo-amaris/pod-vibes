@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { fetchTopPodcastsWithCache } from '../../services/podcastService';
 import Card from '../../components/Card/Card';
 import { useLoading } from '../../context/LoadingContext';
 import { useNavigation } from '../../context/NavigationContext';
 import PodcastDetailPage from '../PodcastDetailPage/PodcastDetailPage';
+import Filter from '../../components/Filter/Filter';
 import './../../styles/homePage.scss';
 
 const HomePage: React.FC = () => {
@@ -46,6 +47,16 @@ const HomePage: React.FC = () => {
 		setFilteredPodcasts(filtered);
 	}, [filter, podcasts]);
 
+	// Lógica para el filtrado
+	useEffect(() => {
+		const lowercasedFilter = filter.toLowerCase();
+		const filtered = podcasts.filter(
+			(podcast) =>
+				podcast.title.toLowerCase().includes(lowercasedFilter) ||
+				podcast.author.toLowerCase().includes(lowercasedFilter)
+		);
+		setFilteredPodcasts(filtered);
+	}, [filter, podcasts]);
 
 
 	// Renderiza el detalle del podcast si hay uno seleccionado
@@ -62,19 +73,15 @@ const HomePage: React.FC = () => {
 				className='boxppal flex flex-column'
 				role="podcast-list"
 			>
-				<div className="boxppal__search flex flex-center">
-					<div className="filter-count flex flex-center">
-						<span>{filteredPodcasts.length}</span>
-					</div>
-
-					<input
-						type="text"
+				<div className="boxfilter">
+					<Filter
+						filter={filter}
+						setFilter={setFilter}
 						placeholder="Filter podcasts..."
-						value={filter}
-						onChange={(e) => setFilter(e.target.value)}
-						className='boxppal__input align-self-end boxstyles'
+						count={filteredPodcasts.length}
 					/>
 				</div>
+
 
 				{filteredPodcasts && filteredPodcasts.length > 0 ? (
 					<div className='boxppal__card'>

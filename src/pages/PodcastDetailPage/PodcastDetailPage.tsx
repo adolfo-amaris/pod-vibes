@@ -4,12 +4,15 @@ import { useNavigation } from '../../context/NavigationContext';
 import { useLoading } from '../../context/LoadingContext';
 import EpisodeDetailPage from '../EpisodeDetailPage/EpisodeDetailPage';
 import useHomeNavigation from '../../hook/useHomeNavigation';
+import Filter from '../../components/Filter/Filter';
 import './../../styles/podcastDetailPage.scss';
 
 const PodcastDetailPage: React.FC = () => {
 	// Contexto de navegación para gestionar el podcast y episodio seleccionados
 	const { selectedPodcast, setSelectedPodcast, selectedEpisode, setSelectedEpisode } = useNavigation();
 	const [podcast, setPodcast] = useState<any>(null); // Estado para almacenar los detalles del podcast
+	const [filteredEpisodes, setFilteredEpisodes] = useState<any[]>([]);
+	const [filter, setFilter] = useState('');
 	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 	const { handleHomeClick } = useHomeNavigation();
 
@@ -32,6 +35,7 @@ const PodcastDetailPage: React.FC = () => {
 				setLoading(true);
 				const data = await fetchPodcastDetailsWithCache(selectedPodcast.id); // Llama al servicio para obtener los detalles
 				setPodcast(data); // Guarda los datos del podcast en el estado
+				setFilteredEpisodes(data.episodes);
 			} catch (error) {
 				console.error('Error al cargar los detalles del podcast:', error);
 			} finally {
@@ -45,6 +49,18 @@ const PodcastDetailPage: React.FC = () => {
 		}
 
 	}, [selectedPodcast, loading]);
+
+	// Efecto para filtrar los episodios
+	useEffect(() => {
+		if (podcast?.episodes) {
+			const lowercasedFilter = filter.toLowerCase();
+			const filtered = podcast.episodes.filter((episode: any) =>
+				episode.trackName.toLowerCase().includes(lowercasedFilter)
+			);
+			setFilteredEpisodes(filtered);
+		}
+	}, [filter, podcast]);
+
 
 	// Si no se pudo cargar el podcast, muestra un mensaje de error
 	if (!podcast && !loading) {
@@ -139,7 +155,15 @@ const PodcastDetailPage: React.FC = () => {
 					) : (
 						<div className='boxepisode__list'>
 
-							<h1 className="container__title boxstyles">Episodes: {podcast.episodes.length}</h1>
+							<div className='boxepisode__header flex flex-center justify-between boxstyles'>
+								<h1 className="boxepisode__title">Episodes: {podcast.episodes.length}</h1>
+								<Filter
+									filter={filter}
+									setFilter={setFilter}
+									placeholder="Filter episodes..."
+									count={filteredEpisodes.length}
+								/>
+							</div>
 							<div className="episodes flex flex-column boxstyles">
 
 								<div className="episodes__card flex">
@@ -148,7 +172,7 @@ const PodcastDetailPage: React.FC = () => {
 									<div className="episodes__card-duration bold">Duration</div>
 								</div>
 
-								{podcast.episodes.map((episode: any) => (
+								{filteredEpisodes.map((episode: any) => (
 									<div
 										className="episodes__card flex hoverEffect boxstyles"
 										key={episode.trackId}
