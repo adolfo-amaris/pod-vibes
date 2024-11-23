@@ -1,47 +1,48 @@
 import axios from 'axios';
-import { log } from 'console';
 
-const BASE_URL = 'https://itunes.apple.com';
-const PROXY_URL = 'https://api.allorigins.win/get?url='; // Proxy para manejar CORS
+// Clase para manejar la lógica del servicio
+class PodcastService {
+	private baseUrl: string;
+	private proxyUrl: string;
+	private httpClient: any;
 
-// Función para obtener el listado de los 100 podcasts más populares
-export const fetchTopPodcasts = async () => {
+	constructor(httpClient = axios) {
+		this.baseUrl = 'https://itunes.apple.com';
+		this.proxyUrl = 'https://api.allorigins.win/get?url=';
+		this.httpClient = httpClient;
+	}
 
-	try {
+	// Método privado para manejar las solicitudes
+	private async fetchFromApi(endpoint: string): Promise<any> {
+		try {
+			const url = `${this.proxyUrl}${encodeURIComponent(this.baseUrl + endpoint)}`;
+			const response = await this.httpClient.get(url);
+			return JSON.parse(response.data.contents);
+		} catch (error) {
+			console.error('Error al obtener datos desde la API:', error);
+			throw error;
+		}
+	}
 
-		const url = `${BASE_URL}/us/rss/toppodcasts/limit=100/genre=1310/json`;
-		const response = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`);
-		const data = JSON.parse(response.data.contents);
-		
+	// Obtener los podcasts más populares
+	public async fetchTopPodcasts(): Promise<any[]> {
+		const endpoint = '/us/rss/toppodcasts/limit=100/genre=1310/json';
+		const data = await this.fetchFromApi(endpoint);
 		return data.feed.entry.map((podcast: any) => ({
 			id: podcast.id.attributes['im:id'],
 			title: podcast['im:name'].label,
 			author: podcast['im:artist'].label,
 			image: podcast['im:image'][2].label,
-			description: podcast['summary'].label
+			description: podcast['summary'].label,
 		}));
-
-	} catch (error) {
-
-		console.error('Error al obtener los podcasts:', error);
-		throw error;
-
 	}
 
-};
-
-// Función para obtener los detalles de un podcast específico
-export const fetchPodcastDetails = async (podcastId: string) => {
-
-	try {
-
-		const url = `${BASE_URL}/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`;
-		const response = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`);
-		const data = JSON.parse(response.data.contents);	
-		console.log("Esto es data.... ", data);
+	// Obtener detalles de un podcast
+	public async fetchPodcastDetails(podcastId: string): Promise<any> {
+		const endpoint = `/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`;
+		const data = await this.fetchFromApi(endpoint);
 		return {
-
-			details: data.results[0], // Detalle del podcast
+			details: data.results[0],
 			episodes: data.results.slice(1).map((episode: any) => ({
 				trackId: episode.trackId,
 				trackName: episode.trackName,
@@ -50,74 +51,53 @@ export const fetchPodcastDetails = async (podcastId: string) => {
 				episodeUrl: episode.episodeUrl,
 				trackTimeMillis: episode.trackTimeMillis || 0,
 			})),
-
 		};
-	} catch (error) {
-
-		console.error('Error al obtener los detalles del podcast:', error);
-		throw error;
-
 	}
 
-};
-
-export const fetchTopPodcastsWithCache = async () => {
-
-	const cacheKey = 'podcasts';
-	const cacheTimestampKey = 'podcastsTimestamp';
-	const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
-
-	// Verificar caché existente
-	const cachedData = localStorage.getItem(cacheKey);
-	const cachedTimestamp = localStorage.getItem(cacheTimestampKey);
-
-	if (cachedData && cachedTimestamp) {
-
-		const isCacheValid =
-			Date.now() - parseInt(cachedTimestamp, 10) < cacheDuration;
-		if (isCacheValid) {
-			// console.log('Cargando datos desde el caché', JSON.parse(cachedData));
-			return JSON.parse(cachedData);
+	// Manejo de caché
+	private handleCache(key: string, duration: number): any | null {
+		const cachedData = localStorage.getItem(key);
+		const cachedTimestamp = localStorage.getItem(`${key}_timestamp`);
+		if (cachedData && cachedTimestamp) {
+			const isCacheValid = Date.now() - parseInt(cachedTimestamp, 10) < duration;
+			if (isCacheValid) {
+				return JSON.parse(cachedData);
+			}
 		}
-		
+		return null;
 	}
 
-	// Si no hay caché o es inválido, hacer la solicitud
-	const data = await fetchTopPodcasts();
-
-	// Guardar en caché
-	localStorage.setItem(cacheKey, JSON.stringify(data));
-	localStorage.setItem(cacheTimestampKey, Date.now().toString());
-
-	return data;
-
-};
-
-export const fetchPodcastDetailsWithCache = async (podcastId: string) => {
-
-	const cacheKey = `podcast_${podcastId}`;
-	const cacheTimestampKey = `${cacheKey}_timestamp`;
-	const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
-
-	// Verificar caché existente
-	const cachedData = localStorage.getItem(cacheKey);
-	const cachedTimestamp = localStorage.getItem(cacheTimestampKey);
-
-	if (cachedData && cachedTimestamp) {
-		const isCacheValid =
-			Date.now() - parseInt(cachedTimestamp, 10) < cacheDuration;
-		if (isCacheValid) {
-			return JSON.parse(cachedData);
-		}
+	private saveToCache(key: string, data: any): void {
+		localStorage.setItem(key, JSON.stringify(data));
+		localStorage.setItem(`${key}_timestamp`, Date.now().toString());
 	}
 
-	// Si no hay caché o es inválido, hacer la solicitud
-	const data = await fetchPodcastDetails(podcastId);
+	// Obtener los podcasts con caché
+	public async fetchTopPodcastsWithCache(): Promise<any[]> {
+		const cacheKey = 'podcasts';
+		const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
+		const cachedData = this.handleCache(cacheKey, cacheDuration);
 
-	// Guardar en caché
-	localStorage.setItem(cacheKey, JSON.stringify(data));
-	localStorage.setItem(cacheTimestampKey, Date.now().toString());
+		if (cachedData) return cachedData;
 
-	return data;
+		const data = await this.fetchTopPodcasts();
+		this.saveToCache(cacheKey, data);
+		return data;
+	}
 
-};
+	// Obtener detalles del podcast con caché
+	public async fetchPodcastDetailsWithCache(podcastId: string): Promise<any> {
+		const cacheKey = `podcast_${podcastId}`;
+		const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
+		const cachedData = this.handleCache(cacheKey, cacheDuration);
+
+		if (cachedData) return cachedData;
+
+		const data = await this.fetchPodcastDetails(podcastId);
+		this.saveToCache(cacheKey, data);
+		return data;
+	}
+}
+
+// Instancia del servicio exportada
+export const podcastService = new PodcastService();

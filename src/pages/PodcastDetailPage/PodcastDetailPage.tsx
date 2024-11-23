@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { fetchPodcastDetailsWithCache } from '../../services/podcastService';
+import { podcastService } from '../../services/podcastService';
 import { useNavigation } from '../../context/NavigationContext';
 import { useLoading } from '../../context/LoadingContext';
 import EpisodeDetailPage from '../EpisodeDetailPage/EpisodeDetailPage';
 import useHomeNavigation from '../../hook/useHomeNavigation';
 import Filter from '../../components/Filter/Filter';
+import { usePodcastFilter } from '../../hook/usePodcastFilter';
 import './../../styles/podcastDetailPage.scss';
 
 const PodcastDetailPage: React.FC = () => {
 	// Contexto de navegación para gestionar el podcast y episodio seleccionados
 	const { selectedPodcast, setSelectedPodcast, selectedEpisode, setSelectedEpisode } = useNavigation();
 	const [podcast, setPodcast] = useState<any>(null); // Estado para almacenar los detalles del podcast
-	const [filteredEpisodes, setFilteredEpisodes] = useState<any[]>([]);
-	const [filter, setFilter] = useState('');
 	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 	const { handleHomeClick } = useHomeNavigation();
 
 
+	// Reutilizamos el hook para manejar el filtro de episodios
+	const { filter, setFilter, filteredPodcasts: filteredEpisodes } = usePodcastFilter(
+		podcast?.episodes || []
+	);
 
 
 	// Efecto para cargar los detalles del podcast al montar el componente
@@ -33,9 +36,8 @@ const PodcastDetailPage: React.FC = () => {
 
 			try {
 				setLoading(true);
-				const data = await fetchPodcastDetailsWithCache(selectedPodcast.id); // Llama al servicio para obtener los detalles
+				const data = await podcastService.fetchPodcastDetailsWithCache(selectedPodcast.id);
 				setPodcast(data); // Guarda los datos del podcast en el estado
-				setFilteredEpisodes(data.episodes);
 			} catch (error) {
 				console.error('Error al cargar los detalles del podcast:', error);
 			} finally {
@@ -49,17 +51,6 @@ const PodcastDetailPage: React.FC = () => {
 		}
 
 	}, [selectedPodcast, loading]);
-
-	// Efecto para filtrar los episodios
-	useEffect(() => {
-		if (podcast?.episodes) {
-			const lowercasedFilter = filter.toLowerCase();
-			const filtered = podcast.episodes.filter((episode: any) =>
-				episode.trackName.toLowerCase().includes(lowercasedFilter)
-			);
-			setFilteredEpisodes(filtered);
-		}
-	}, [filter, podcast]);
 
 
 	// Si no se pudo cargar el podcast, muestra un mensaje de error

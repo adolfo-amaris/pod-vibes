@@ -1,62 +1,39 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { fetchTopPodcastsWithCache } from '../../services/podcastService';
+import React, { useEffect, useState } from 'react';
+import { podcastService  } from '../../services/podcastService';
 import Card from '../../components/Card/Card';
 import { useLoading } from '../../context/LoadingContext';
 import { useNavigation } from '../../context/NavigationContext';
 import PodcastDetailPage from '../PodcastDetailPage/PodcastDetailPage';
 import Filter from '../../components/Filter/Filter';
+import { usePodcastFilter } from '../../hook/usePodcastFilter';
 import './../../styles/homePage.scss';
 
 const HomePage: React.FC = () => {
 	const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
 	const [podcasts, setPodcasts] = useState<any[]>(initialPodcasts);
 	const { setSelectedPodcast, selectedPodcast } = useNavigation();
-	const [filter, setFilter] = useState('');
-	const [filteredPodcasts, setFilteredPodcasts] = useState<any[]>(initialPodcasts);
+	const { filter, setFilter, filteredPodcasts } = usePodcastFilter(podcasts);
+
 	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 
-	useEffect(() => {
+    useEffect(() => {
 
-		const loadPodcasts = async () => {
-
-			try {
-				setLoading(true);
-				const data = await fetchTopPodcastsWithCache();
-				setPodcasts(data);
-				setFilteredPodcasts(data);
-				localStorage.setItem('podcasts', JSON.stringify(data));
-			} catch (error) {
-				console.error('Error al cargar el listado podcasts:', error);
-			} finally {
-				setLoading(false);
-			}
-
-		};
+        const loadPodcasts = async () => {
+            try {
+                setLoading(true);
+                const data = await podcastService.fetchTopPodcastsWithCache();
+                setPodcasts(data);
+                localStorage.setItem('podcasts', JSON.stringify(data));
+            } catch (error) {
+                console.error('Error al cargar los podcasts:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
 		loadPodcasts();
 
 	}, [setLoading]);
-
-	useEffect(() => {
-		const lowercasedFilter = filter.toLowerCase();
-		const filtered = podcasts.filter(
-			(podcast) =>
-				podcast.title.toLowerCase().includes(lowercasedFilter) ||
-				podcast.author.toLowerCase().includes(lowercasedFilter)
-		);
-		setFilteredPodcasts(filtered);
-	}, [filter, podcasts]);
-
-	// Lógica para el filtrado
-	useEffect(() => {
-		const lowercasedFilter = filter.toLowerCase();
-		const filtered = podcasts.filter(
-			(podcast) =>
-				podcast.title.toLowerCase().includes(lowercasedFilter) ||
-				podcast.author.toLowerCase().includes(lowercasedFilter)
-		);
-		setFilteredPodcasts(filtered);
-	}, [filter, podcasts]);
 
 
 	// Renderiza el detalle del podcast si hay uno seleccionado
