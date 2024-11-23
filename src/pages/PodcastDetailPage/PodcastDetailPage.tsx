@@ -1,89 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { podcastService } from '../../services/podcastService';
+import React from 'react';
 import { useNavigation } from '../../context/NavigationContext';
-import { useLoading } from '../../context/LoadingContext';
 import EpisodeDetailPage from '../EpisodeDetailPage/EpisodeDetailPage';
-import useHomeNavigation from '../../hook/useHomeNavigation';
+import { usePodcastDetails } from '../../hook/usePodcastDetails';
 import Filter from '../../components/Filter/Filter';
 import { usePodcastFilter } from '../../hook/usePodcastFilter';
 import './../../styles/podcastDetailPage.scss';
 
 const PodcastDetailPage: React.FC = () => {
-	// Contexto de navegación para gestionar el podcast y episodio seleccionados
-	const { selectedPodcast, setSelectedPodcast, selectedEpisode, setSelectedEpisode } = useNavigation();
-	const [podcast, setPodcast] = useState<any>(null); // Estado para almacenar los detalles del podcast
-	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
-	const { handleHomeClick } = useHomeNavigation();
+	const { selectedPodcast, setSelectedEpisode, selectedEpisode } = useNavigation();
 
+	// Convertir undefined a null para cumplir con el tipo esperado
+	const podcastId = selectedPodcast?.id ?? null;
 
-	// Reutilizamos el hook para manejar el filtro de episodios
+	// Obtener los detalles del podcast usando el hook
+	const { podcastDetails, loading, error } = usePodcastDetails(podcastId);
+
+	// Filtrar episodios usando el hook de filtrado
 	const { filter, setFilter, filteredPodcasts: filteredEpisodes } = usePodcastFilter(
-		podcast?.episodes || []
+		podcastDetails?.episodes || []
 	);
 
+	// window.scrollTo({ top: 0, behavior: 'smooth' });
 
-	// Efecto para cargar los detalles del podcast al montar el componente
-	useEffect(() => {
-
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-
-		const loadPodcastDetails = async () => {
-
-			if (!selectedPodcast) {
-				console.error('No hay un podcast seleccionado');
-				return;
-			}
-
-			try {
-				setLoading(true);
-				const data = await podcastService.fetchPodcastDetailsWithCache(selectedPodcast.id);
-				setPodcast(data); // Guarda los datos del podcast en el estado
-			} catch (error) {
-				console.error('Error al cargar los detalles del podcast:', error);
-			} finally {
-				setLoading(false);
-			}
-
-		};
-
-		if (selectedPodcast) {
-			loadPodcastDetails();
-		}
-
-	}, [selectedPodcast, loading]);
-
-
-	// Si no se pudo cargar el podcast, muestra un mensaje de error
-	if (!podcast && !loading) {
-
-		return (
-			<div style={{ textAlign: 'center', marginTop: '20px' }}>
-				<p>Error al cargar los detalles del podcast. Por favor, inténtalo de nuevo más tarde.</p>
-				<button
-					onClick={(e) => {
-						e.preventDefault();
-						handleHomeClick();
-					}} // Permite volver al listado de podcasts
-					style={{
-						padding: '10px 20px',
-						fontSize: '16px',
-						backgroundColor: '#007BFF',
-						color: '#fff',
-						border: 'none',
-						borderRadius: '4px',
-						cursor: 'pointer',
-					}}
-				>
-					Volver
-				</button>
-			</div>
-		);
-
-	}
-
-	if (!podcast || !podcast.episodes || !selectedPodcast) {
-		return <p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando detalles del podcast...</p>;
-	}
 
 	// Función para formatear la duración de los episodios
 	const formatDuration = (millis: number) => {
@@ -104,7 +42,7 @@ const PodcastDetailPage: React.FC = () => {
 
 	// Renderiza el detalle del podcast y la lista de episodios
 	return (
-		!podcast || !podcast.episodes || !selectedPodcast ? (
+		!podcastDetails || !selectedPodcast || !podcastDetails.episodes  ? (
 			<p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando detalles del podcast...</p>
 		) : (
 
@@ -115,8 +53,8 @@ const PodcastDetailPage: React.FC = () => {
 					<div className='boxdetail__boxpodcast flex flex-column'>
 						<img
 							className='boxpodcast_img hoverEffect'
-							src={podcast.details.artworkUrl600}
-							alt={podcast.details.collectionName}
+							src={podcastDetails.details.artworkUrl600}
+							alt={podcastDetails.details.collectionName}
 							onClick={() => setSelectedEpisode(null)}
 						/>
 						<hr />
@@ -147,7 +85,7 @@ const PodcastDetailPage: React.FC = () => {
 						<div className='boxepisode__list'>
 
 							<div className='boxepisode__header flex flex-center justify-between boxstyles'>
-								<h1 className="boxepisode__title">Episodes: {podcast.episodes.length}</h1>
+								<h1 className="boxepisode__title">Episodes: {podcastDetails.episodes.length}</h1>
 								<Filter
 									filter={filter}
 									setFilter={setFilter}

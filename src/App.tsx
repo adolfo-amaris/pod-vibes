@@ -6,6 +6,7 @@ import EpisodeDetailPage from './pages/EpisodeDetailPage/EpisodeDetailPage';
 import Header from './components/Header/Header';
 import { LoadingProvider } from './context/LoadingContext';
 import { NavigationProvider } from './context/NavigationContext';
+import { PodcastServiceProvider } from './context/PodcastServiceContext'; // Importa el proveedor
 
 
 const App: React.FC = () => {
@@ -19,22 +20,25 @@ const App: React.FC = () => {
 
         <LoadingProvider>
 
-          {/* El Header se muestra en todas las páginas */}
-          <Header />
+          <PodcastServiceProvider> {/* Añadir el proveedor aquí */}
+
+            {/* El Header se muestra en todas las páginas */}
+            <Header />
 
 
-          <Routes>
+            <Routes>
 
-            {/* Ruta para la página principal */}
-            <Route path="/" element={<HomePage />} />
+              {/* Ruta para la página principal */}
+              <Route path="/" element={<HomePage />} />
 
-            {/* Ruta para el detalle de un podcast */}
-            <Route path="/podcast/:podcastId" element={<PodcastDetailPage />} />
+              {/* Ruta para el detalle de un podcast */}
+              <Route path="/podcast/:podcastId" element={<PodcastDetailPage />} />
 
-            {/* Ruta para el detalle de un episodio */}
-            <Route path="/podcast/:podcastId/episode/:episodeId" element={<EpisodeDetailPage />} />
+              {/* Ruta para el detalle de un episodio */}
+              <Route path="/podcast/:podcastId/episode/:episodeId" element={<EpisodeDetailPage />} />
 
-          </Routes>
+            </Routes>
+          </PodcastServiceProvider>
 
         </LoadingProvider>
       </NavigationProvider>

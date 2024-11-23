@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Clase para manejar la lógica del servicio
-class PodcastService {
+export class PodcastService {
 	private baseUrl: string;
 	private proxyUrl: string;
 	private httpClient: any;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { podcastService  } from '../../services/podcastService';
+import { usePodcastService } from '../../context/PodcastServiceContext';
 import Card from '../../components/Card/Card';
 import { useLoading } from '../../context/LoadingContext';
 import { useNavigation } from '../../context/NavigationContext';
@@ -9,6 +9,7 @@ import { usePodcastFilter } from '../../hook/usePodcastFilter';
 import './../../styles/homePage.scss';
 
 const HomePage: React.FC = () => {
+	const podcastService = usePodcastService(); // Usar el servicio desde el contexto
 	const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
 	const [podcasts, setPodcasts] = useState<any[]>(initialPodcasts);
 	const { setSelectedPodcast, selectedPodcast } = useNavigation();
