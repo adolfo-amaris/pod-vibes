@@ -31,9 +31,6 @@ Podcaster es una aplicación desarrollada en React que permite a los usuarios ex
 ### Pruebas unitarias:
 - Jest y React Testing Library para pruebas unitarias y de integración.
 - Mocking de localStorage y servicios API.
-- Manejo de Caché: localStorage para optimizar la carga de datos y mejorar el rendimiento.
-- Fetching de Datos: Axios para consumir la API de iTunes RSS.
-
 
 ## Características Principales
 1. **Exploración de Podcasts Populares:**
@@ -190,4 +187,5 @@ Este proyecto demuestra cómo construir una SPA moderna utilizando tecnologías 
 
 ## Próximos Pasos
 - Implementación de lazy-loading para cargar datos y optimizar el tiempo de carga inicial
+- Test para los componentes de PodcastDetail y EpisodeDetail
 - Uso de SSR con Next.js
