@@ -1,12 +1,15 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import HomePage from '../pages/HomePage/HomePage';
-import { podcastService } from '../services/podcastService';
-import { LoadingProvider } from '../context/LoadingContext';
-import { NavigationProvider } from '../context/NavigationContext';
+import HomePage from './../features/podcasts/pages/HomePage/HomePage';
+import { podcastService } from '../features/podcasts/services/podcastService';
+import { LoadingProvider } from './../shared/context/LoadingContext';
+import { NavigationProvider } from './../shared/context/NavigationContext';
+import { PodcastServiceProvider } from './../shared/context/PodcastServiceContext';
 
-jest.mock('../services/podcastService');
+
+jest.mock('../features/podcasts/services/podcastService');
 
 describe('HomePage Component', () => {
     const mockPodcasts = [
@@ -45,11 +48,20 @@ describe('HomePage Component', () => {
     it('renderiza correctamente la página inicial con datos de caché', async () => {
         await act(async () => {
             render(
-                <LoadingProvider>
-                    <NavigationProvider>
-                        <HomePage />
-                    </NavigationProvider>
-                </LoadingProvider>
+                <Router
+                    future={{
+                        v7_relativeSplatPath: true,
+                        v7_startTransition: true,
+                    }}
+                >
+                    <LoadingProvider>
+                        <PodcastServiceProvider>
+                            <NavigationProvider>
+                                <HomePage />
+                            </NavigationProvider>
+                        </PodcastServiceProvider>
+                    </LoadingProvider>
+                </Router>
             );
         });
 
@@ -67,14 +79,25 @@ describe('HomePage Component', () => {
 
         await act(async () => {
             render(
-                <LoadingProvider>
-                    <NavigationProvider>
-                        <HomePage />
-                    </NavigationProvider>
-                </LoadingProvider>
+                <Router
+                    future={{
+                        v7_relativeSplatPath: true,
+                        v7_startTransition: true,
+                    }}
+                >
+                    <LoadingProvider>
+                        <PodcastServiceProvider>
+                            <NavigationProvider>
+                                <HomePage />
+                            </NavigationProvider>
+                        </PodcastServiceProvider>
+                    </LoadingProvider>
+                </Router>
             );
         });
 
         expect(podcastService.fetchTopPodcastsWithCache).toHaveBeenCalled();
     });
+
+
 });

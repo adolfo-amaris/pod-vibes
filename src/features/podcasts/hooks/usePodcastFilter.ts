@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState, useMemo } from 'react';
 
 export const usePodcastFilter = (episodes: any[], initialFilter = '') => {
     const [filter, setFilter] = useState(initialFilter);
-    const [filteredPodcasts, setFilteredPodcasts] = useState(episodes);
 
-    useEffect(() => {
+    const filteredPodcasts = useMemo(() => {
         const lowercasedFilter = filter.toLowerCase();
-        const filtered = episodes.filter((episode) => {
+        return episodes.filter((episode) => {
             const trackName = episode.trackName?.toLowerCase() || ''; // Validación para evitar undefined
             const description = episode.description?.toLowerCase() || ''; // Validación para evitar undefined
             return trackName.includes(lowercasedFilter) || description.includes(lowercasedFilter);
         });
-        setFilteredPodcasts(filtered);
     }, [filter, episodes]);
 
     return { filter, setFilter, filteredPodcasts };
