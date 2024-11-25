@@ -188,4 +188,5 @@ Este proyecto demuestra cómo construir una SPA moderna utilizando tecnologías 
 ## Próximos Pasos
 - Implementación de lazy-loading para cargar datos y optimizar el tiempo de carga inicial
 - Test para los componentes de PodcastDetail y EpisodeDetail
+- Diseño responsive adaptative
 - Uso de SSR con Next.js
