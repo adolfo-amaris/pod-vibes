@@ -25,7 +25,6 @@ const App: React.FC = () => {
             {/* El Header se muestra en todas las páginas */}
             <Header />
 
-
             <Routes>
 
               {/* Ruta para la página principal */}
@@ -37,9 +36,11 @@ const App: React.FC = () => {
               </Route>
 
             </Routes>
+
           </PodcastServiceProvider>
 
         </LoadingProvider>
+        
       </NavigationProvider>
 
 
