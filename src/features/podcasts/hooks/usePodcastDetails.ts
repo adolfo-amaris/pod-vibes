@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { usePodcastService } from '../context/PodcastServiceContext';
+import { usePodcastService } from './../../../shared/context/PodcastServiceContext';
 
 export const usePodcastDetails = (podcastId: string | null) => {
     const podcastService = usePodcastService();

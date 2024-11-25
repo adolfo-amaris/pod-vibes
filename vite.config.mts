@@ -13,7 +13,7 @@ export default defineConfig({
       scss: {
         silenceDeprecations: ["legacy-js-api"],
         additionalData: `
-          @use "./src/styles/_vars" as vars;
+          @use "./src/shared/styles/_vars" as vars;
         `,
       },
     },

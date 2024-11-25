@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { PodcastService, podcastService } from '../services/podcastService';
+import { PodcastService, podcastService } from './../../features/podcasts/services/podcastService';
 
 const PodcastServiceContext = createContext<PodcastService | null>(null);
 

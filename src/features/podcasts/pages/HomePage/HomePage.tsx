@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { usePodcastService } from '../../context/PodcastServiceContext';
-import Card from '../../components/Card/Card';
-import { useLoading } from '../../context/LoadingContext';
-import { useNavigation } from '../../context/NavigationContext';
-import PodcastDetailPage from '../PodcastDetailPage/PodcastDetailPage';
-import Filter from '../../components/Filter/Filter';
-import { usePodcastFilter } from '../../hook/usePodcastFilter';
+import { usePodcastService } from './../../../../shared/context/PodcastServiceContext';
+import Card from './../../components/PodcastCard';
+import { useLoading } from './../../../../shared/context/LoadingContext';
+import { usePodcastFilter } from './../../hooks/usePodcastFilter';
+import { useNavigate } from 'react-router-dom';
+import Filter from './../../components/Filter';
 import './../../styles/homePage.scss';
 
 const HomePage: React.FC = () => {
 	const podcastService = usePodcastService(); // Usar el servicio desde el contexto
-	const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
-	const [podcasts, setPodcasts] = useState<any[]>(initialPodcasts);
-	const { setSelectedPodcast, selectedPodcast } = useNavigation();
-	const { filter, setFilter, filteredPodcasts } = usePodcastFilter(podcasts);
+    const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
+    const [podcasts, setPodcasts] = useState<any[]>(initialPodcasts);
+    const { filter, setFilter, filteredPodcasts } = usePodcastFilter(podcasts);
+    const { loading, setLoading } = useLoading(); // Uso del estado global de carga
+    const navigate = useNavigate(); // Navegar para diferentes páginas
 
-	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 
     useEffect(() => {
 
@@ -35,12 +34,6 @@ const HomePage: React.FC = () => {
 		loadPodcasts();
 
 	}, [setLoading]);
-
-
-	// Renderiza el detalle del podcast si hay uno seleccionado
-	if (selectedPodcast) {
-		return <PodcastDetailPage />;
-	}
 
 	return (
 
@@ -69,7 +62,7 @@ const HomePage: React.FC = () => {
 								image={podcast.image}
 								title={podcast.title}
 								author={podcast.author}
-								onClick={() => setSelectedPodcast(podcast)}
+                                onClick={() => navigate(`/podcast/${podcast.id}`)}
 							/>
 						))}
 					</div>
