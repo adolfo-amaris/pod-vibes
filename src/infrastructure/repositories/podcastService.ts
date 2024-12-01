@@ -25,16 +25,10 @@ export class PodcastService {
 	}
 
 	// Obtener los podcasts más populares
-	public async fetchTopPodcasts(): Promise<any[]> {
+	public async fetchTopPodcasts(): Promise<any> {
 		const endpoint = '/us/rss/toppodcasts/limit=100/genre=1310/json';
 		const data = await this.fetchFromApi(endpoint);
-		return data.feed.entry.map((podcast: any) => ({
-			id: podcast.id.attributes['im:id'],
-			title: podcast['im:name'].label,
-			author: podcast['im:artist'].label,
-			image: podcast['im:image'][2].label,
-			description: podcast['summary'].label,
-		}));
+		return data.feed.entry; // Devolvemos los datos crudos
 	}
 
 	// Obtener detalles de un podcast
