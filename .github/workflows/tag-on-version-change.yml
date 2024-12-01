@@ -1,0 +1,34 @@
+name: Tag on Version Change
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag_version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create and push tag
+        env:
+          VERSION: ${{ env.VERSION }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v$VERSION" -m "Release version $VERSION as per package.json"
+          git push origin "v$VERSION"
