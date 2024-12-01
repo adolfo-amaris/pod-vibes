@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { transformPodcastDetails } from '../../domain/services/podcastDetailsTransformer';
 
 // Clase para manejar la lógica del servicio
 export class PodcastService {
@@ -35,17 +36,9 @@ export class PodcastService {
 	public async fetchPodcastDetails(podcastId: string): Promise<any> {
 		const endpoint = `/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`;
 		const data = await this.fetchFromApi(endpoint);
-		return {
-			details: data.results[0],
-			episodes: data.results.slice(1).map((episode: any) => ({
-				trackId: episode.trackId,
-				trackName: episode.trackName,
-				description: episode.description,
-				releaseDate: episode.releaseDate,
-				episodeUrl: episode.episodeUrl,
-				trackTimeMillis: episode.trackTimeMillis || 0,
-			})),
-		};
+
+		// Usar el transformador
+		return transformPodcastDetails(data);
 	}
 
 	// Manejo de caché
