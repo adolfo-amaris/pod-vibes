@@ -1,16 +1,21 @@
 import axios from 'axios';
 import { transformPodcastDetails } from '../../domain/services/podcastDetailsTransformer';
+import { IPodcastService } from '../../application/interfaces/IPodcastService';
+import { CacheManager } from './../services/CacheManager';
 
 // Clase para manejar la lógica del servicio
-export class PodcastService {
+export class PodcastService implements IPodcastService {
 	private baseUrl: string;
 	private proxyUrl: string;
 	private httpClient: any;
+	private cacheManager: CacheManager;
 
-	constructor(httpClient = axios) {
+
+	constructor(httpClient = axios, cacheManager = new CacheManager()) {
 		this.baseUrl = 'https://itunes.apple.com';
 		this.proxyUrl = 'https://api.allorigins.win/get?url=';
 		this.httpClient = httpClient;
+		this.cacheManager = cacheManager;
 	}
 
 	// Método privado para manejar las solicitudes
@@ -41,34 +46,16 @@ export class PodcastService {
 		return transformPodcastDetails(data);
 	}
 
-	// Manejo de caché
-	private handleCache(key: string, duration: number): any | null {
-		const cachedData = localStorage.getItem(key);
-		const cachedTimestamp = localStorage.getItem(`${key}_timestamp`);
-		if (cachedData && cachedTimestamp) {
-			const isCacheValid = Date.now() - parseInt(cachedTimestamp, 10) < duration;
-			if (isCacheValid) {
-				return JSON.parse(cachedData);
-			}
-		}
-		return null;
-	}
-
-	private saveToCache(key: string, data: any): void {
-		localStorage.setItem(key, JSON.stringify(data));
-		localStorage.setItem(`${key}_timestamp`, Date.now().toString());
-	}
-
 	// Obtener los podcasts con caché
 	public async fetchTopPodcastsWithCache(): Promise<any[]> {
 		const cacheKey = 'podcasts';
 		const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
-		const cachedData = this.handleCache(cacheKey, cacheDuration);
+		const cachedData = this.cacheManager.getCache(cacheKey, cacheDuration);
 
 		if (cachedData) return cachedData;
 
 		const data = await this.fetchTopPodcasts();
-		this.saveToCache(cacheKey, data);
+		this.cacheManager.setCache(cacheKey, data);
 		return data;
 	}
 
@@ -76,12 +63,12 @@ export class PodcastService {
 	public async fetchPodcastDetailsWithCache(podcastId: string): Promise<any> {
 		const cacheKey = `podcast_${podcastId}`;
 		const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
-		const cachedData = this.handleCache(cacheKey, cacheDuration);
+		const cachedData = this.cacheManager.getCache(cacheKey, cacheDuration);
 
 		if (cachedData) return cachedData;
 
 		const data = await this.fetchPodcastDetails(podcastId);
-		this.saveToCache(cacheKey, data);
+		this.cacheManager.setCache(cacheKey, data);
 		return data;
 	}
 }
