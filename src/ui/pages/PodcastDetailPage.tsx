@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { usePodcastDetails } from './../../hooks/usePodcastDetails';
-import { useLoading } from './../../../../shared/context/LoadingContext'; // Import loading context
-import Filter from './../../components/Filter';
-import { usePodcastFilter } from './../../hooks/usePodcastFilter';
-import './../../styles/podcastDetailPage.scss';
+import { usePodcastDetails } from './../../application/interfaces/usePodcastDetails';
+import { useLoading } from './../../shared/context/LoadingContext';
+import Filter from './../components/Filter';
+import { usePodcastFilter } from './../../application/interfaces/usePodcastFilter';
+import './../../shared/styles/podcastDetailPage.scss';
 
 const PodcastDetailPage: React.FC = () => {
 	const { podcastId } = useParams<{ podcastId: string }>();

@@ -1,6 +1,6 @@
 {
   "name": "podcaster",
-  "version": "4.0.0",
+  "version": "6.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.3",

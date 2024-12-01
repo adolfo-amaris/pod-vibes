@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './features/podcasts/pages/HomePage/HomePage';
-import PodcastDetailPage from './features/podcasts/pages/PodcastDetailPage/PodcastDetailPage';
-import EpisodeDetailPage from './features/podcasts/pages/EpisodeDetailPage/EpisodeDetailPage';
-import Header from './shared/components/Header';
+import HomePage from './ui/pages/HomePage';
+import PodcastDetailPage from './ui/pages/PodcastDetailPage';
+import EpisodeDetailPage from './ui/pages/EpisodeDetailPage';
+import Header from './ui/components/Header';
 import { LoadingProvider } from './shared/context/LoadingContext';
 import { NavigationProvider } from './shared/context/NavigationContext';
-import { PodcastServiceProvider } from './shared/context/PodcastServiceContext'; // Importa el proveedor
+import { PodcastServiceProvider } from './application/interfaces/PodcastServiceContext';
 
 
 const App: React.FC = () => {

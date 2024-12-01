@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { usePodcastService } from './../../../../shared/context/PodcastServiceContext';
-import Card from './../../components/PodcastCard';
-import { useLoading } from './../../../../shared/context/LoadingContext';
-import { usePodcastFilter } from './../../hooks/usePodcastFilter';
+import { usePodcastService } from './../../application/interfaces/PodcastServiceContext';
+import Card from './../components/PodcastCard';
+import { useLoading } from './../../shared/context/LoadingContext';
+import { usePodcastFilter } from './../../application/interfaces/usePodcastFilter';
 import { useNavigate } from 'react-router-dom';
-import Filter from './../../components/Filter';
-import './../../styles/homePage.scss';
+import Filter from './../components/Filter';
+import './../../shared/styles/homePage.scss';
 
 const HomePage: React.FC = () => {
 	const podcastService = usePodcastService(); // Usar el servicio desde el contexto

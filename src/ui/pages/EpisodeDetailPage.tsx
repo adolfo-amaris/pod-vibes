@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { usePodcastDetails } from './../../hooks/usePodcastDetails';
-import './../../styles/episodeDetailPage.scss';
+import { usePodcastDetails } from './../../application/interfaces/usePodcastDetails';
+import './../../shared/styles/episodeDetailPage.scss';
 
 
 const EpisodeDetailPage: React.FC = () => {

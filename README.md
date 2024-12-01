@@ -60,51 +60,57 @@ Podcaster es una aplicación desarrollada en React que permite a los usuarios ex
 ## Estructura del Proyecto
 
 ```
-├── assets/
-├── features/
-    ├── podcasts/
-        ├── components/
-            ├── Filter.tsx
-            ├── PodcastCard.tsx
-        ├── hooks/
-            ├── usePodcastDetails.ts
-            ├── usePodcastFilter.ts
-        ├── pages/
-            ├── EpisodeDetailPage/
-                ├── EpisodeDetailPage.tsx
-            ├── HomePage/
-                ├── HomePage.tsx
-            ├── PodcastDetailPage/
-                ├── PodcastDetailPage.tsx
-        ├── services/
-            ├── podcastService.ts
-        ├── styles/
-            ├── card.scss
-            ├── episodeDetailPage.scss
-            ├── filter.scss
-            ├── homePage.scss
-            ├── podcastDetailPage.scss
-        ├── types/
-            ├── podcast.ts
-├── shared/
-    ├── components/
-        ├── Header.tsx
-        ├── LoadingIndicator.tsx
-    ├── context/
-        ├── LoadingContext.tsx
-        ├── NavigationContext.tsx
-        ├── PodcastServiceContext.tsx
-    ├── hooks/
-        ├── useHomeNavigation.ts
-    ├── styles/
-        ├── global.scss
-        ├── header.scss
-        ├── loadingIndicator.scss
-        ├── _vars.scss
-    ├── utils/
+podcaster/
+├── src/
+│   ├── domain/
+│   │   ├── entities/
+│   │   │   └── podcast.ts
+│   │   ├── value-objects/
+│   │   ├── aggregates/
+│   │   └── services/
+│   ├── application/
+│   │   ├── use-cases/
+│   │   ├── dto/
+│   │   └── interfaces/
+│   │       └── PodcastServiceContext.tsx
+│   ├── infrastructure/
+│   │   ├── repositories/
+│   │   │   └── podcastService.ts
+│   │   ├── api/
+│   │   └── mappers/
+│   ├── ui/
+│   │   ├── components/
+│   │   │   ├── Filter.tsx
+│   │   │   ├── PodcastCard.tsx
+│   │   │   └── Header.tsx
+│   │   ├── pages/
+│   │   │   ├── EpisodeDetailPage.tsx
+│   │   │   ├── HomePage.tsx
+│   │   │   └── PodcastDetailPage.tsx
+│   │   ├── hooks/
+│   │   │   └── useHomeNavigation.ts
+│   ├── shared/
+│   │   ├── context/
+│   │   │   ├── LoadingContext.tsx
+│   │   │   └── NavigationContext.tsx
+│   │   ├── styles/
+│   │   │   ├── card.scss
+│   │   │   ├── episodeDetailPage.scss
+│   │   │   ├── filter.scss
+│   │   │   ├── homePage.scss
+│   │   │   ├── podcastDetailPage.scss
+│   │   │   ├── global.scss
+│   │   │   └── _vars.scss
+│   │   └── utils/
 ├── __tests__/
-    ├── Header.test.tsx
-    ├── HomePage.test.tsx
+│   ├── domain/
+│   ├── application/
+│   ├── infrastructure/
+│   ├── ui/
+│   ├── shared/
+├── package.json
+├── tsconfig.json
+├── README.md
 ├── App.css
 ├── App.test.tsx
 ├── App.tsx
