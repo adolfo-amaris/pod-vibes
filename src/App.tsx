@@ -5,7 +5,7 @@ import PodcastDetailPage from './ui/pages/PodcastDetailPage';
 import EpisodeDetailPage from './ui/pages/EpisodeDetailPage';
 import Header from './ui/components/Header';
 import { LoadingProvider } from './shared/context/LoadingContext';
-import { NavigationProvider } from './shared/context/NavigationContext';
+import { NavigationProvider } from './application/context/NavigationContext';
 import { PodcastServiceProvider } from './application/interfaces/PodcastServiceContext';
 
 

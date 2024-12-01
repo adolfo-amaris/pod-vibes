@@ -1,4 +1,4 @@
-import { useNavigation } from './../../shared/context/NavigationContext';
+import { useNavigation } from '../../application/context/NavigationContext';
 
 const useHomeNavigation = () => {
     const { setSelectedPodcast, setSelectedEpisode } = useNavigation();
