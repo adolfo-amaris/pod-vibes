@@ -1,39 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { usePodcastService } from '../../infrastructure/context/PodcastServiceContext';
-import Card from './../components/PodcastCard';
-import { useLoading } from './../../shared/context/LoadingContext';
-import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
 import { useNavigate } from 'react-router-dom';
+import { transformPodcasts } from '../../domain/services/podcastTransformer';
+import { usePodcastService } from '../../infrastructure/context/PodcastServiceContext';
+import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
+import { useLoading } from './../../shared/context/LoadingContext';
+import Card from './../components/PodcastCard';
 import Filter from './../components/Filter';
 import './../../shared/styles/homePage.scss';
 
 const HomePage: React.FC = () => {
 	const podcastService = usePodcastService(); // Usar el servicio desde el contexto
-    const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
-    const [podcasts, setPodcasts] = useState<any[]>(initialPodcasts);
-    const { filter, setFilter, filteredPodcasts } = usePodcastFilter(podcasts);
-    const { loading, setLoading } = useLoading(); // Uso del estado global de carga
-    const navigate = useNavigate(); // Navegar para diferentes páginas
+	const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
+	const [podcasts, setPodcasts] = useState<any[]>(initialPodcasts);
+	const { filter, setFilter, filteredPodcasts } = usePodcastFilter(podcasts);
+	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
+	const navigate = useNavigate(); // Navegar para diferentes páginas
 
 
-    useEffect(() => {
+	useEffect(() => {
 
-        const loadPodcasts = async () => {
-            try {
-                setLoading(true);
-                const data = await podcastService.fetchTopPodcastsWithCache();
-                setPodcasts(data);
-                localStorage.setItem('podcasts', JSON.stringify(data));
-            } catch (error) {
-                console.error('Error al cargar los podcasts:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+		const loadPodcasts = async () => {
+			try {
+				setLoading(true);
+				const storedPodcasts = localStorage.getItem('podcasts');
+				if (storedPodcasts) {
+					const parsedPodcasts = JSON.parse(storedPodcasts);
+					setPodcasts(parsedPodcasts);
+					setLoading(false); // Evitar solicitar de nuevo si ya están cargados
+					return;
+				}
+
+				// Si no están en localStorage, cargar desde el API
+				const rawPodcasts = await podcastService.fetchTopPodcastsWithCache();
+				const transformedPodcasts = transformPodcasts(rawPodcasts);
+				setPodcasts(transformedPodcasts);
+
+				// Guardar los datos transformados en localStorage
+				localStorage.setItem('podcasts', JSON.stringify(transformedPodcasts));
+			} catch (error) {
+				console.error('Error al cargar los podcasts:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
 
 		loadPodcasts();
 
-	}, [setLoading]);
+	}, [setLoading, podcastService]);
 
 	return (
 
@@ -62,7 +75,7 @@ const HomePage: React.FC = () => {
 								image={podcast.image}
 								title={podcast.title}
 								author={podcast.author}
-                                onClick={() => navigate(`/podcast/${podcast.id}`)}
+								onClick={() => navigate(`/podcast/${podcast.id}`)}
 							/>
 						))}
 					</div>
