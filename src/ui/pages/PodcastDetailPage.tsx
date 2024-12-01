@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { usePodcastDetails } from './../../application/interfaces/usePodcastDetails';
+import { usePodcastDetails } from '../../application/use-cases/usePodcastDetails';
 import { useLoading } from './../../shared/context/LoadingContext';
 import Filter from './../components/Filter';
-import { usePodcastFilter } from './../../application/interfaces/usePodcastFilter';
+import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
 import './../../shared/styles/podcastDetailPage.scss';
 
 const PodcastDetailPage: React.FC = () => {

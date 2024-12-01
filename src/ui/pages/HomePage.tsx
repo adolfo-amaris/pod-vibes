@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { usePodcastService } from './../../application/interfaces/PodcastServiceContext';
 import Card from './../components/PodcastCard';
 import { useLoading } from './../../shared/context/LoadingContext';
-import { usePodcastFilter } from './../../application/interfaces/usePodcastFilter';
+import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
 import { useNavigate } from 'react-router-dom';
 import Filter from './../components/Filter';
 import './../../shared/styles/homePage.scss';

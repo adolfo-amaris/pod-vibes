@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { usePodcastDetails } from './../../application/interfaces/usePodcastDetails';
+import { usePodcastDetails } from '../../application/use-cases/usePodcastDetails';
 import './../../shared/styles/episodeDetailPage.scss';
 
 
