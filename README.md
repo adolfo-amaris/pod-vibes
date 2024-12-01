@@ -76,7 +76,8 @@ podcaster/
 │   ├── infrastructure/
 │   │   ├── repositories/
 │   │   │   └── podcastService.ts
-│   │   ├── api/
+│   │   ├── services/
+│   │   │   └── CacheManager.ts
 │   │   └── mappers/
 │   ├── ui/
 │   │   ├── components/

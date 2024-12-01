@@ -1,7 +1,9 @@
 import React, { createContext, useContext } from 'react';
-import { PodcastService, podcastService } from '../repositories/podcastService';
+import { podcastService } from '../repositories/podcastService';
+import { IPodcastService } from '../../application/interfaces/IPodcastService';
 
-const PodcastServiceContext = createContext<PodcastService | null>(null);
+
+const PodcastServiceContext = createContext<IPodcastService | null>(null);
 
 export const PodcastServiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
@@ -11,7 +13,7 @@ export const PodcastServiceProvider: React.FC<{ children: React.ReactNode }> = (
     );
 };
 
-export const usePodcastService = (): PodcastService => {
+export const usePodcastService = (): IPodcastService => {
     const context = useContext(PodcastServiceContext);
     if (!context) {
         throw new Error('usePodcastService debe usarse dentro de un PodcastServiceProvider');
