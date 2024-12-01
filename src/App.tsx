@@ -6,7 +6,7 @@ import EpisodeDetailPage from './ui/pages/EpisodeDetailPage';
 import Header from './ui/components/Header';
 import { LoadingProvider } from './shared/context/LoadingContext';
 import { NavigationProvider } from './application/context/NavigationContext';
-import { PodcastServiceProvider } from './application/interfaces/PodcastServiceContext';
+import { PodcastServiceProvider } from './infrastructure/context/PodcastServiceContext';
 
 
 const App: React.FC = () => {
