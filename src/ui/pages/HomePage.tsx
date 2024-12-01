@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { usePodcastService } from './../../application/interfaces/PodcastServiceContext';
+import { usePodcastService } from '../../infrastructure/context/PodcastServiceContext';
 import Card from './../components/PodcastCard';
 import { useLoading } from './../../shared/context/LoadingContext';
 import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
