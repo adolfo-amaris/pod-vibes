@@ -1,7 +1,7 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'jest-environment-jsdom',
-    roots: ['<rootDir>/tests/'],
+    roots: ['<rootDir>/__tests__/'],
     testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
     transform: {
         "^.+\\.[t|j]sx?$": "babel-jest" // Usa babel-jest para procesar JS/TS
