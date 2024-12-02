@@ -1,6 +1,7 @@
 import { Podcast } from "../entities/podcast";
+import { PodcastAPIResponse } from "./../types/apiResponses";
 
-export const transformPodcasts = (rawPodcasts: any[]): Podcast[] => {
+export const transformPodcasts = (rawPodcasts: PodcastAPIResponse[]): Podcast[] => {
     return rawPodcasts
         .map((entry) => {
             // Verificar que las propiedades necesarias existan
@@ -11,15 +12,12 @@ export const transformPodcasts = (rawPodcasts: any[]): Podcast[] => {
 
             if (!id || !title || !author || !image) {
                 console.warn("Datos incompletos en el podcast:", entry);
-                return undefined; // Usar undefined en lugar de null
+                return undefined;  // Usar undefined en lugar de null
+
             }
 
-            return {
-                id,
-                title,
-                author,
-                image,
-            };
+            // Instancia la entidad enriquecida Podcast
+            return new Podcast(id, title, author, image);
         })
         .filter((podcast): podcast is Podcast => podcast !== undefined); // Filtrar undefined y asegurar el tipo
 };
