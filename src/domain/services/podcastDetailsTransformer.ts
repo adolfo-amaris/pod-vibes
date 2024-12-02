@@ -14,7 +14,7 @@ export const transformPodcastDetails = (data: PodcastDetailsAPIResponse) => {
                 episode.episodeUrl
             );
         } catch (error) {
-            console.warn("Episodio inválido:", episode, error);
+            // console.warn("Episodio inválido:", episode, error);
             return undefined;
         }
     }).filter((episode): episode is Episode => episode !== undefined);
