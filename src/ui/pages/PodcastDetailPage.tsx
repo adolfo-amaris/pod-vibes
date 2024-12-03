@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { usePodcastDetails } from '../../application/use-cases/usePodcastDetails';
 import { useLoading } from './../../shared/context/LoadingContext';
 import Filter from './../components/Filter';
 import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
 import './../../shared/styles/podcastDetailPage.scss';
+import { EpisodeDetails, PodcastDetailsResponse } from '../../domain/types/apiResponses';
 
 const PodcastDetailPage: React.FC = () => {
 	const { podcastId } = useParams<{ podcastId: string }>();
@@ -12,33 +13,26 @@ const PodcastDetailPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { setLoading } = useLoading();
 
-
 	// Validamos podcastId antes de continuar
 	if (!podcastId) {
 		return (
-			<p style={{ textAlign: 'center', marginTop: '20px' }}>
+			<p style={{ textAlign: "center", marginTop: "20px" }}>
 				No se encontró el podcast seleccionado. Por favor, selecciona otro.
 			</p>
 		);
 	}
 
+	// Hook para obtener los detalles del podcast
 	const { podcastDetails, loading, error } = usePodcastDetails(podcastId);
-	const { filter, setFilter, filteredPodcasts: filteredEpisodes } = usePodcastFilter(
-		podcastDetails?.episodes || []
-	);
+	// const filteredEpisodes: EpisodeDetails[] = usePodcastFilter({
+	// 	episodes: podcastDetails?.episodes || [],
+	// 	filter,
+	// });
 
 	useEffect(() => {
 		setLoading(loading);
 		return () => setLoading(false);
 	}, [loading, setLoading]);
-
-	// Función para formatear la duración de los episodios
-	const formatDuration = (millis: number) => {
-		if (!millis) return "Duración no disponible"; // Maneja el caso cuando millis es undefined
-		const minutes = Math.floor(millis / 60000);
-		const seconds = ((millis % 60000) / 1000).toFixed(0);
-		return `${minutes}:${seconds.padStart(2, '0')}`;
-	};
 
 	const formatDate = (releaseDate: string): string => {
 		const parsedDate = new Date(releaseDate); // Convertir la cadena en un objeto Date
@@ -57,7 +51,7 @@ const PodcastDetailPage: React.FC = () => {
 		return <p style={{ textAlign: 'center', marginTop: '20px' }}>Error al cargar el podcast.</p>;
 	}
 
-	const isEpisodeDetail = location.pathname.includes('/episode/');
+	const isEpisodeDetail = location.pathname.includes("/episode/");
 
 
 	// Renderiza el detalle del podcast y la lista de episodios
@@ -67,14 +61,14 @@ const PodcastDetailPage: React.FC = () => {
 				<div className='boxdetail__boxpodcast flex flex-column'>
 					<img
 						className='boxpodcast_img hoverEffect'
-						src={podcastDetails.details.artworkUrl600}
-						alt={podcastDetails.details.collectionName}
+						src={podcastDetails.details.artworkUrl}
+						alt={podcastDetails.details.name}
 						onClick={() => navigate(`/podcast/${podcastId}`)} // Reseteamos al listado de eposidios
 					/>
 					<hr />
 					<div className='boxpodcast_name'>
-						<h1>{podcastDetails.details.collectionName}</h1>
-						<h3>by {podcastDetails.details.artistName}</h3>
+						<h1>{podcastDetails.details.name}</h1>
+						<h3>by {podcastDetails.details.description}</h3>
 					</div>
 					<hr />
 					<p className='boxpodcast_description'>
@@ -92,12 +86,12 @@ const PodcastDetailPage: React.FC = () => {
 					<>
 						<div className='boxepisode__header flex flex-center justify-between boxstyles'>
 							<h1 className="boxepisode__title">Episodes: {podcastDetails.episodes.length}</h1>
-							<Filter
+							{/* <Filter
 								filter={filter}
 								setFilter={setFilter}
 								placeholder="Filter episodes..."
 								count={filteredEpisodes.length}
-							/>
+							/> */}
 						</div>
 						<div className="episodes flex flex-column boxstyles">
 							<div className="episodes__card flex">
@@ -105,16 +99,16 @@ const PodcastDetailPage: React.FC = () => {
 								<div className="episodes__card-date bold">Date</div>
 								<div className="episodes__card-duration bold">Duration</div>
 							</div>
-							{filteredEpisodes.map((episode: any) => (
+							{podcastDetails.episodes.map((episode: EpisodeDetails) => (
 								<div
 									className="episodes__card flex hoverEffect boxstyles"
-									key={episode.trackId}
-									onClick={() => navigate(`/podcast/${podcastId}/episode/${episode.trackId}`)}
+									key={episode.id}
+									onClick={() => navigate(`/podcast/${podcastId}/episode/${episode.id}`)}
 								>
-									<div className="episodes__card-title">{episode.trackName}</div>
+									<div className="episodes__card-title">{episode.name}</div>
 									<div className="episodes__card-date">{formatDate(episode.releaseDate)}</div>
 									<div className="episodes__card-duration">
-										{formatDuration(episode.trackTimeMillis)}
+										{episode.formattedDuration}
 									</div>
 								</div>
 							))}
