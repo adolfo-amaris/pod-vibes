@@ -11,7 +11,7 @@ export const transformPodcasts = (rawPodcasts: PodcastAPIResponse[]): Podcast[] 
             const image = entry['im:image']?.[2]?.label;
 
             if (!id || !title || !author || !image) {
-                // console.warn("Datos incompletos en el podcast:", entry);
+                console.warn("Datos incompletos en el podcast:", entry);
                 return undefined;  // Usar undefined en lugar de null
 
             }

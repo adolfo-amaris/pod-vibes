@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { Episode } from '../../domain/entities/podcast';
 
 
 interface Podcast {
@@ -12,8 +13,8 @@ interface Podcast {
 interface NavigationContextType {
     selectedPodcast: Podcast | null;
     setSelectedPodcast: (podcast: Podcast | null) => void;
-    selectedEpisode: any | null;
-    setSelectedEpisode: (episode: any | null) => void;
+    selectedEpisode: Episode | null;
+    setSelectedEpisode: (episode: Episode | null) => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
@@ -31,7 +32,7 @@ export const useNavigation = () => {
 export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
     const [selectedPodcast, setSelectedPodcast] = useState<Podcast | null>(null);
-    const [selectedEpisode, setSelectedEpisode] = useState<any | null>(null);
+    const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
 
     return (
         <NavigationContext.Provider
