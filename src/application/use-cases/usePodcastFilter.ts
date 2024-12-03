@@ -1,16 +1,15 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from "react";
+import { Podcast } from "../../domain/entities/podcast";
 
-export const usePodcastFilter = (episodes: any[], initialFilter = '') => {
-    const [filter, setFilter] = useState(initialFilter);
+export const usePodcastFilter = (podcasts: Podcast[]) => {
+    const [filter, setFilter] = useState("");
 
     const filteredPodcasts = useMemo(() => {
-        const lowercasedFilter = filter.toLowerCase();
-        return episodes.filter((episode) => {
-            const trackName = episode.trackName?.toLowerCase() || ''; // Validación para evitar undefined
-            const description = episode.description?.toLowerCase() || ''; // Validación para evitar undefined
-            return trackName.includes(lowercasedFilter) || description.includes(lowercasedFilter);
-        });
-    }, [filter, episodes]);
+        return podcasts.filter((podcast) =>
+            podcast.title.toLowerCase().includes(filter.toLowerCase()) ||
+            podcast.author.toLowerCase().includes(filter.toLowerCase())
+        );
+    }, [filter, podcasts]);
 
     return { filter, setFilter, filteredPodcasts };
 };

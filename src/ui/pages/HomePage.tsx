@@ -7,11 +7,12 @@ import { useLoading } from './../../shared/context/LoadingContext';
 import Card from './../components/PodcastCard';
 import Filter from './../components/Filter';
 import './../../shared/styles/homePage.scss';
+import { Podcast } from '../../domain/entities/podcast';
 
 const HomePage: React.FC = () => {
 	const podcastService = usePodcastService(); // Usar el servicio desde el contexto
 	const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
-	const [podcasts, setPodcasts] = useState<any[]>(initialPodcasts);
+	const [podcasts, setPodcasts] = useState<Podcast[]>(initialPodcasts);
 	const { filter, setFilter, filteredPodcasts } = usePodcastFilter(podcasts);
 	const { loading, setLoading } = useLoading(); // Uso del estado global de carga
 	const navigate = useNavigate(); // Navegar para diferentes páginas

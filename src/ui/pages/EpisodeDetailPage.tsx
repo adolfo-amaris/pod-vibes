@@ -28,7 +28,7 @@ const EpisodeDetailPage: React.FC = () => {
 	}
 
 	const selectedEpisode = podcastDetails.episodes.find(
-		(episode: any) => episode.trackId === parseInt(episodeId || '0', 10)
+		(episode) => episode.id === parseInt(episodeId || '0', 10)
 	);
 
 	if (!selectedEpisode) {
@@ -55,14 +55,14 @@ const EpisodeDetailPage: React.FC = () => {
 
 	return (
 		<div className='boxepisode boxstyles'>
-			<h1>{selectedEpisode.trackName}</h1>
+			<h1>{selectedEpisode.name}</h1>
 			<p>Fecha de publicación: {new Date(selectedEpisode.releaseDate).toLocaleDateString()}</p>
 			<div
 				className='boxepisode__description'
 				dangerouslySetInnerHTML={{ __html: selectedEpisode.description }}
 			></div>
 			<audio controls>
-				<source src={selectedEpisode.episodeUrl} type="audio/mpeg" />
+				<source src={selectedEpisode.audioUrl} type="audio/mpeg" />
 				Tu navegador no soporta el reproductor de audio.
 			</audio>
 		</div>

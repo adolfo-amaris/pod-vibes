@@ -2,6 +2,7 @@ import axios from 'axios';
 import { transformPodcastDetails } from '../../domain/services/podcastDetailsTransformer';
 import { IPodcastService } from '../../application/interfaces/IPodcastService';
 import { CacheManager } from './../services/CacheManager';
+import { PodcastDetailsAPIResponse } from '../../domain/types/apiResponses';
 
 // Clase para manejar la lógica del servicio
 export class PodcastService implements IPodcastService {
@@ -38,12 +39,36 @@ export class PodcastService implements IPodcastService {
 	}
 
 	// Obtener detalles de un podcast
-	public async fetchPodcastDetails(podcastId: string): Promise<any> {
+	public async fetchPodcastDetails(podcastId: string): Promise<PodcastDetailsAPIResponse> {
 		const endpoint = `/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`;
 		const data = await this.fetchFromApi(endpoint);
 
-		// Usar el transformador
-		return transformPodcastDetails(data);
+		if (!data || !data.results || !Array.isArray(data.results) || data.results.length === 0) {
+			throw new Error("La respuesta de la API no contiene datos válidos.");
+		}
+
+		const [details, ...episodes] = data.results;
+
+		if (!details || details.wrapperType !== "track" || details.kind !== "podcast") {
+			throw new Error("El campo `details` no contiene un podcast válido.");
+		}
+
+		return {
+			details: {
+				id: details.trackId,
+				name: details.trackName,
+				description: details.collectionName || "Sin descripción",
+				artworkUrl: details.artworkUrl600 || "",
+			},
+			episodes: episodes.map((episode: any) => ({
+				id: episode.trackId,
+				name: episode.trackName || "Sin título",
+				releaseDate: episode.releaseDate || "Fecha desconocida",
+				duration: episode.trackTimeMillis || 0,
+				description: episode.description || "Descripción no disponible.",
+				audioUrl: episode.episodeUrl || "",
+			})),
+		};
 	}
 
 	// Obtener los podcasts con caché
