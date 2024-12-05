@@ -25,7 +25,8 @@
     "preview": "vite preview",
     "lint": "eslint './src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "./src/**/*.{js,jsx,ts,tsx}": [
@@ -38,6 +39,11 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "yarn commitlint --edit $1"
+    }
   },
   "browserslist": {
     "production": [
