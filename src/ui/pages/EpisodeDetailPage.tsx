@@ -6,6 +6,7 @@ import './../../shared/styles/episodeDetailPage.scss';
 
 const EpisodeDetailPage: React.FC = () => {
 	const { podcastId, episodeId } = useParams<{ podcastId: string; episodeId: string }>();
+
 	const navigate = useNavigate();
 
 	// Validamos podcastId antes de continuar
@@ -17,7 +18,8 @@ const EpisodeDetailPage: React.FC = () => {
 		);
 	}
 
-	const { podcastDetails, loading, error } = usePodcastDetails(podcastId);
+	const { podcastDetails, loading, error } = usePodcastDetails(podcastId || '');
+	console.log("Episode ID desde params:", episodeId);
 
 	if (loading) {
 		return <p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando episodio...</p>;
@@ -27,9 +29,8 @@ const EpisodeDetailPage: React.FC = () => {
 		return <p style={{ textAlign: 'center', marginTop: '20px' }}>Error al cargar el episodio.</p>;
 	}
 
-	const selectedEpisode = podcastDetails.episodes.find(
-		(episode) => episode.id === parseInt(episodeId || '0', 10)
-	);
+	// Buscar el episodio seleccionado en la lista de episodios
+	const selectedEpisode = podcastDetails.episodes.find((episode) => String(episode.id) === episodeId);
 
 	if (!selectedEpisode) {
 		return (
