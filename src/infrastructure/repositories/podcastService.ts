@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { transformPodcastDetails } from '../../domain/services/podcastDetailsTransformer';
 import { IPodcastService } from '../../application/interfaces/IPodcastService';
 import { CacheManager } from './../services/CacheManager';
-import { PodcastDetailsAPIResponse } from '../../domain/types/apiResponses';
+import { PodcastAPIResponse, PodcastDetailsAPIResponse } from '../../domain/types/apiResponses';
+import { Podcast } from '../../domain/entities/podcast';
+import { transformPodcasts } from '../../domain/services/podcastTransformer';
 
 // Clase para manejar la lógica del servicio
 export class PodcastService implements IPodcastService {
@@ -10,7 +11,6 @@ export class PodcastService implements IPodcastService {
 	private proxyUrl: string;
 	private httpClient: any;
 	private cacheManager: CacheManager;
-
 
 	constructor(httpClient = axios, cacheManager = new CacheManager()) {
 		this.baseUrl = 'https://itunes.apple.com';
@@ -32,11 +32,30 @@ export class PodcastService implements IPodcastService {
 	}
 
 	// Obtener los podcasts más populares
-	public async fetchTopPodcasts(): Promise<any> {
+	public async fetchTopPodcasts(): Promise<Podcast[]> {
 		const endpoint = '/us/rss/toppodcasts/limit=100/genre=1310/json';
 		const data = await this.fetchFromApi(endpoint);
-		return data.feed.entry; // Devolvemos los datos crudos
+
+		// Validar que los datos contengan `feed.entry`
+		if (!data || !data.feed || !Array.isArray(data.feed.entry)) {
+			throw new Error("La respuesta de la API no contiene un formato válido.");
+		}
+
+		return transformPodcasts(data.feed.entry as PodcastAPIResponse[]);
 	}
+
+		// Obtener los podcasts más populares con caché
+		public async fetchTopPodcastsWithCache(): Promise<Podcast[]> {
+			const cacheKey = 'podcasts';
+			const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
+			const cachedData = this.cacheManager.getCache(cacheKey, cacheDuration);
+	
+			if (cachedData) return cachedData;
+	
+			const data = await this.fetchTopPodcasts();
+			this.cacheManager.setCache(cacheKey, data);
+			return data;
+		}
 
 	// Obtener detalles de un podcast
 	public async fetchPodcastDetails(podcastId: string): Promise<PodcastDetailsAPIResponse> {
@@ -69,19 +88,6 @@ export class PodcastService implements IPodcastService {
 				audioUrl: episode.episodeUrl || "",
 			})),
 		};
-	}
-
-	// Obtener los podcasts con caché
-	public async fetchTopPodcastsWithCache(): Promise<any[]> {
-		const cacheKey = 'podcasts';
-		const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
-		const cachedData = this.cacheManager.getCache(cacheKey, cacheDuration);
-
-		if (cachedData) return cachedData;
-
-		const data = await this.fetchTopPodcasts();
-		this.cacheManager.setCache(cacheKey, data);
-		return data;
 	}
 
 	// Obtener detalles del podcast con caché

@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { usePodcastDetails } from '../../application/use-cases/usePodcastDetails';
 import { useLoading } from './../../shared/context/LoadingContext';
-import Filter from './../components/Filter';
-import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
 import './../../shared/styles/podcastDetailPage.scss';
-import { EpisodeDetails, PodcastDetailsResponse } from '../../domain/types/apiResponses';
 
 const PodcastDetailPage: React.FC = () => {
 	const { podcastId } = useParams<{ podcastId: string }>();
@@ -24,10 +21,7 @@ const PodcastDetailPage: React.FC = () => {
 
 	// Hook para obtener los detalles del podcast
 	const { podcastDetails, loading, error } = usePodcastDetails(podcastId);
-	// const filteredEpisodes: EpisodeDetails[] = usePodcastFilter({
-	// 	episodes: podcastDetails?.episodes || [],
-	// 	filter,
-	// });
+	
 
 	useEffect(() => {
 		setLoading(loading);
@@ -86,12 +80,6 @@ const PodcastDetailPage: React.FC = () => {
 					<>
 						<div className='boxepisode__header flex flex-center justify-between boxstyles'>
 							<h1 className="boxepisode__title">Episodes: {podcastDetails.episodes.length}</h1>
-							{/* <Filter
-								filter={filter}
-								setFilter={setFilter}
-								placeholder="Filter episodes..."
-								count={filteredEpisodes.length}
-							/> */}
 						</div>
 						<div className="episodes flex flex-column boxstyles">
 							<div className="episodes__card flex">
@@ -99,7 +87,7 @@ const PodcastDetailPage: React.FC = () => {
 								<div className="episodes__card-date bold">Date</div>
 								<div className="episodes__card-duration bold">Duration</div>
 							</div>
-							{podcastDetails.episodes.map((episode: EpisodeDetails) => (
+							{podcastDetails.episodes.map((episode) => (
 								<div
 									className="episodes__card flex hoverEffect boxstyles"
 									key={episode.id}

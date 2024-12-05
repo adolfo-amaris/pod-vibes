@@ -32,10 +32,9 @@ const HomePage: React.FC = () => {
 				}
 
 				// Si no están en localStorage, cargar desde el API
-				const rawPodcasts = await podcastService.fetchTopPodcastsWithCache();
-				const transformedPodcasts = transformPodcasts(rawPodcasts);
+				const transformedPodcasts = await podcastService.fetchTopPodcastsWithCache();				
 				setPodcasts(transformedPodcasts);
-
+				
 				// Guardar los datos transformados en localStorage
 				localStorage.setItem('podcasts', JSON.stringify(transformedPodcasts));
 			} catch (error) {
