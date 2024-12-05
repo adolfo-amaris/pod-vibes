@@ -1,27 +1,27 @@
 // Tipo para la respuesta de podcasts populares
 export interface PodcastAPIResponse {
-    id: { attributes: { 'im:id': string } };
-    'im:name': { label: string };
-    'im:artist': { label: string };
-    'im:image': { label: string }[];
+    id: { attributes: { "im:id": string | null } } | null; // Permitir valores nulos
+    "im:name": { label: string | null };
+    "im:artist": { label: string | null };
+    "im:image": { label: string | null }[]; // Permitir arrays vacíos y valores nulos
 }
 
 // Tipo para la respuesta de los detalles de un podcast y sus episodios
 export interface PodcastDetailsAPIResponse {
     details: {
-        id: number;
+        id: string;
         name: string;
         description: string;
         artworkUrl: string;
     };
-    episodes: Array<{
-        id: number;
+    episodes: {
+        id: string;
         name: string;
-        releaseDate: string;
-        duration: number;
         description: string;
+        duration: number;
         audioUrl: string;
-    }>;
+        releaseDate: string;
+    }[];
 }
 
 
@@ -50,13 +50,13 @@ export interface EpisodeDetails {
 // Tipo transformado para los detalles y episodios del podcast
 export interface PodcastDetailsResponse {
     details: {
-        id: number;
+        id: string;
         name: string;
         description: string;
         artworkUrl: string;
     };
-    episodes: Array<{
-        id: number;
+    episodes: {
+        id: string;
         name: string;
         releaseDate: string;
         duration: number;
@@ -64,6 +64,6 @@ export interface PodcastDetailsResponse {
         audioUrl: string;
         isValidUrl: boolean;
         formattedDuration: string;
-    }>;
+    }[];
 }
 

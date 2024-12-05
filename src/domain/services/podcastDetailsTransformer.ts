@@ -1,29 +1,23 @@
-import { PodcastDetailsAPIResponse, PodcastDetailsResponse } from "../types/apiResponses";
+import { Episode } from "../entities/episode";
+import { PodcastDetail } from "./../entities/PodcastDetail";
+
+import { PodcastDetailsAPIResponse, PodcastDetailsResponse } from "./../types/apiResponses";
 
 export const transformPodcastDetails = (data: PodcastDetailsAPIResponse): PodcastDetailsResponse => {
     return {
-        details: {
-            id: data.details.id,
-            name: data.details.name,
-            description: data.details.description || "Sin descripción",
-            artworkUrl: data.details.artworkUrl || "",
-        },
-        episodes: data.episodes.map((episode) => ({
-            id: episode.id,
-            name: episode.name || "Sin título",
-            releaseDate: episode.releaseDate || "Fecha desconocida",
-            duration: episode.duration || 0,
-            description: episode.description || "Descripción no disponible.",
-            audioUrl: episode.audioUrl || "",
-            isValidUrl: !!episode.audioUrl,
-            formattedDuration: formatDuration(episode.duration || 0),
-        })),
+        details: PodcastDetail.fromApiResponse(data.details), // Usar la nueva entidad
+        episodes: data.episodes.map((episode) => {
+            const ep = Episode.fromApiResponse(episode);
+            return {
+                id: ep.id,
+                name: ep.title,
+                releaseDate: ep.releaseDate,
+                duration: ep.duration,
+                description: ep.description,
+                audioUrl: ep.audioUrl,
+                isValidUrl: !!ep.audioUrl,
+                formattedDuration: ep.formatDuration(),
+            };
+        }),
     };
-};
-
-const formatDuration = (millis: number): string => {
-    if (!millis) return "Duración no disponible";
-    const minutes = Math.floor(millis / 60000);
-    const seconds = Math.floor((millis % 60000) / 1000);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 };

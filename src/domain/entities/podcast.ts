@@ -5,62 +5,42 @@ export class Podcast {
         public readonly author: string,
         public readonly image: string
     ) {
-        if (!id) {
-            throw new Error("El ID del podcast es obligatorio.");
-        }
-        if (!title || title.length < 3) {
-            throw new Error("El título del podcast debe tener al menos 3 caracteres.");
-        }
-        if (!author) {
-            throw new Error("El autor del podcast es obligatorio.");
-        }
-        if (!image) {
-            throw new Error("La imagen del podcast es obligatoria.");
-        }
+        if (!id) throw new Error("El ID del podcast es obligatorio.");
+        if (!title) throw new Error("El título del podcast es obligatorio.");
+        if (!author) throw new Error("El autor del podcast es obligatorio.");
+        if (!image) throw new Error("La URL de la imagen es obligatoria.");
+    }
+
+    // Método para obtener una versión segura de la URL de la imagen
+    public getSafeImageUrl(defaultImage: string = "/default-image.jpg"): string {
+        return this.image || defaultImage;
     }
 
     // Lógica de negocio: formato consistente del título
     get formattedTitle(): string {
         return this.title.toUpperCase();
     }
-}
 
-export class Episode {
-    constructor(
-        public readonly trackId: string,
-        public readonly trackName: string,
-        public readonly releaseDate: string,
-        public readonly trackTimeMillis: number,
-        public readonly description?: string,
-        public readonly episodeUrl?: string
-    ) {
-        if (!trackId) {
-            throw new Error("El trackId es obligatorio.");
-        }
-        if (!trackName || trackName.length < 3) {
-            throw new Error("El nombre del episodio debe tener al menos 3 caracteres.");
-        }
-        if (trackTimeMillis <= 0) {
-            throw new Error("La duración del episodio debe ser positiva.");
-        }
-        if (episodeUrl && !this.isValidUrl(episodeUrl)) {
-            throw new Error(`URL inválida: ${episodeUrl}`);
-        }
+    // Método para truncar el título si es demasiado largo
+    public getTruncatedTitle(maxLength: number = 50): string {
+        return this.title.length > maxLength ? `${this.title.substring(0, maxLength)}...` : this.title;
     }
 
-    // Validación de URL
-    private isValidUrl(url: string): boolean {
-        const urlPattern = new RegExp(
-            "^(https?:\\/\\/)?([\\w.-]+)?([a-z0-9.-]+)\\.([a-z.]{2,6})([\\/\\w .-]*)*\\/?$",
-            "i"
-        );
-        return !!urlPattern.test(url);
-    }
+    // Método estático para transformar datos de la API a una instancia de Podcast
+    public static fromApiResponse(data: any): Podcast {
+        if (!data) {
+            throw new Error("Los datos del podcast no son válidos.");
+        }
 
-    // Lógica de negocio: conversión de duración a formato legible
-    get formattedDuration(): string {
-        const minutes = Math.floor(this.trackTimeMillis / 60000);
-        const seconds = Math.floor((this.trackTimeMillis % 60000) / 1000);
-        return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        const id = data?.id?.attributes?.["im:id"];
+        const title = data?.["im:name"]?.label;
+        const author = data?.["im:artist"]?.label;
+        const image = data?.["im:image"]?.[2]?.label; // Usa la tercera imagen como predeterminada
+
+        if (!id || !title || !author || !image) {
+            throw new Error("Datos incompletos para crear un Podcast.");
+        }
+
+        return new Podcast(id, title, author, image);
     }
 }
