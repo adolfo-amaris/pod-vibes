@@ -6,6 +6,12 @@ export interface PodcastAPIResponse {
     "im:image": { label: string | null }[]; // Permitir arrays vacíos y valores nulos
 }
 
+export interface PodcastFeedResponse {
+    feed: {
+        entry: PodcastAPIResponse[];
+    };
+}
+
 // Tipo para la respuesta de los detalles de un podcast y sus episodios
 export interface PodcastDetailsAPIResponse {
     details: {
@@ -23,6 +29,22 @@ export interface PodcastDetailsAPIResponse {
         releaseDate: string;
     }[];
 }
+
+export interface PodcastDetailsRawAPIResponse {
+    results: Array<{
+        wrapperType: "track";
+        kind: string;
+        trackId: number;
+        trackName: string;
+        collectionName?: string;
+        artworkUrl600?: string;
+        description?: string;
+        releaseDate?: string;
+        trackTimeMillis?: number;
+        episodeUrl?: string;
+    }>;
+}
+
 
 
 // Detalles del podcast
@@ -47,6 +69,15 @@ export interface EpisodeDetails {
     formattedDuration?: string; // Asegúrate de incluir esta propiedad como opcional
 }
 
+export interface EpisodeAPIResponse {
+    id: string;
+    name?: string;
+    description?: string;
+    duration?: number;
+    audioUrl?: string;
+    releaseDate?: string;
+}
+
 // Tipo transformado para los detalles y episodios del podcast
 export interface PodcastDetailsResponse {
     details: {
@@ -66,4 +97,20 @@ export interface PodcastDetailsResponse {
         formattedDuration: string;
     }[];
 }
+
+export interface PodcastDetailAPIResponse {
+    id: string;
+    name: string;
+    description?: string;
+    artworkUrl?: string;
+    episodes: Array<{
+        id: string;
+        name: string;
+        description: string;
+        duration: number;
+        audioUrl: string;
+        releaseDate: string;
+    }>;
+}
+
 

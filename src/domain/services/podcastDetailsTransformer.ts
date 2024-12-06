@@ -1,5 +1,5 @@
 import { Episode } from "../entities/episode";
-import { PodcastDetail } from "./../entities/PodcastDetail";
+import { PodcastDetail } from "./../entities/podcastDetail";
 
 import { PodcastDetailsAPIResponse, PodcastDetailsResponse } from "./../types/apiResponses";
 

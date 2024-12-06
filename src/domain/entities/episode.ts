@@ -1,3 +1,5 @@
+import { EpisodeAPIResponse } from "./../types/apiResponses";
+
 export class Episode {
     constructor(
         public readonly id: string,
@@ -25,9 +27,9 @@ export class Episode {
         return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     }
 
-    
+
     // Método estático para transformar datos de la API a una instancia de Episode
-    public static fromApiResponse(data: any): Episode {
+    public static fromApiResponse(data: EpisodeAPIResponse): Episode {
         if (!data) {
             throw new Error("Los datos del episodio no son válidos.");
         }

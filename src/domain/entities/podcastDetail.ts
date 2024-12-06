@@ -1,4 +1,5 @@
 import { Episode } from "./episode";
+import { PodcastDetailAPIResponse } from "./../types/apiResponses";
 
 export class PodcastDetail {
     constructor(
@@ -20,7 +21,7 @@ export class PodcastDetail {
     }
 
     // Método estático para transformar datos de la API a una instancia de PodcastDetail
-    public static fromApiResponse(data: any): PodcastDetail {
+    public static fromApiResponse(data: PodcastDetailAPIResponse): PodcastDetail {
         if (!data) {
             throw new Error("Los datos del detalle del podcast no son válidos.");
         }

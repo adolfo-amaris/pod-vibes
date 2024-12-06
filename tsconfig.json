@@ -18,9 +18,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "types": [
+      "node",
+      "jest"
+    ]
   },
   "include": [
-    "src"
-, "__tests__"  ]
+    "src",
+    "__tests__"
+  ]
 }
