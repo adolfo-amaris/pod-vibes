@@ -14,19 +14,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16 # Puedes ajustar a la versión que usa tu proyecto
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20 # Asegura una versión compatible con las dependencias
 
-      - name: Install dependencies
-        run: yarn install
+    - name: Clear Yarn Cache
+      run: yarn cache clean
 
-      - name: Run ESLint
-        run: yarn eslint . --ext .js,.ts,.tsx
+    - name: Install dependencies
+      run: yarn install
 
-      - name: Run Prettier Check
-        run: yarn prettier --check .
+    - name: Run ESLint
+      run: yarn eslint . --ext .js,.ts,.tsx
+
+    - name: Run Prettier Check
+      run: yarn prettier --check .
