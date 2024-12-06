@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePodcastService } from '../../infrastructure/context/PodcastServiceContext';
 import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
-import { useLoading } from './../../shared/context/LoadingContext';
+import { useLoading } from './../../../shared/context/LoadingContext';
 import Card from './../components/PodcastCard';
 import Filter from './../components/Filter';
-import './../../shared/styles/homePage.scss';
+import './../../../shared/styles/homePage.scss';
 import { Podcast } from '../../domain/entities/podcast';
 
 const HomePage: React.FC = () => {

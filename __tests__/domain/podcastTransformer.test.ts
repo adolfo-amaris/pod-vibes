@@ -1,4 +1,4 @@
-import { transformPodcasts } from './../../src/domain/services/podcastTransformer';
+import { transformPodcasts } from './../../src/podcastManagement/domain/services/podcastTransformer';
 
 describe('Podcast Transformer', () => {
   it('Debería manejar errores individuales y continuar transformando datos válidos', () => {

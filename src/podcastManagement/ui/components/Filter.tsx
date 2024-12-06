@@ -1,5 +1,5 @@
 import React from 'react';
-import './../../shared/styles/filter.scss';
+import './../../../shared/styles/filter.scss';
 
 interface FilterProps {
   filter: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePodcastDetails } from '../../application/use-cases/usePodcastDetails';
-import './../../shared/styles/episodeDetailPage.scss';
+import './../../../shared/styles/episodeDetailPage.scss';
 
 const EpisodeDetailPage: React.FC = () => {
   const { podcastId, episodeId } = useParams<{

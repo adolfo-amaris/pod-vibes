@@ -1,4 +1,4 @@
-import { transformPodcastDetails } from '../../src/domain/services/podcastDetailsTransformer';
+import { transformPodcastDetails } from '../../src/podcastManagement/domain/services/podcastDetailsTransformer';
 
 describe('Transformador de Detalles del Podcast', () => {
   it('Debería transformar datos válidos de la API en detalles de podcast y episodios', () => {

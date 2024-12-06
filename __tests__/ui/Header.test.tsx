@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { LoadingContext } from './../../src/shared/context/LoadingContext';
-import { NavigationProvider } from '../../src/application/context/NavigationContext';
-import Header from './../../src/ui/components/Header';
+import { NavigationProvider } from '../../src/podcastManagement/application/context/NavigationContext';
+import Header from './../../src/podcastManagement/ui/components/Header';
 
 describe('Header Component', () => {
   test('muestra el texto Podcaster en el header', () => {

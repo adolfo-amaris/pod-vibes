@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import LoadingIndicator from './../../shared/components/LoadingIndicator';
-import { useLoading } from './../../shared/context/LoadingContext';
+import LoadingIndicator from './../../../shared/components/LoadingIndicator';
+import { useLoading } from './../../../shared/context/LoadingContext';
 import useHomeNavigation from './../hooks/useHomeNavigation';
-import './../../shared/styles/header.scss';
+import './../../../shared/styles/header.scss';
 
 function Header() {
   const { handleHomeClick } = useHomeNavigation();

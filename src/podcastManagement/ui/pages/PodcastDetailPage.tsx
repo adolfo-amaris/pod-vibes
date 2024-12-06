@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { usePodcastDetails } from '../../application/use-cases/usePodcastDetails';
-import { useLoading } from './../../shared/context/LoadingContext';
-import './../../shared/styles/podcastDetailPage.scss';
+import { useLoading } from './../../../shared/context/LoadingContext';
+import './../../../shared/styles/podcastDetailPage.scss';
 
 const PodcastDetailPage: React.FC = () => {
   const { podcastId } = useParams<{ podcastId: string }>();
