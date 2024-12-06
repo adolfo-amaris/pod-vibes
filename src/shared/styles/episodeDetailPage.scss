@@ -1,19 +1,19 @@
 .boxepisode {
-    padding: 20px;
-    margin-top: 20px;
-    align-self: start;
+  padding: 20px;
+  margin-top: 20px;
+  align-self: start;
 
-    p{
-        color: vars.$c-tertiary;
-        margin-bottom: 10px;
-    }
+  p {
+    color: vars.$c-tertiary;
+    margin-bottom: 10px;
+  }
 
-    .boxepisode__description{ 
-        margin-bottom: 20px;
-        line-height: 1.6;
-    }
+  .boxepisode__description {
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
 
-    audio{
-        width: 100%;
-    }
+  audio {
+    width: 100%;
+  }
 }

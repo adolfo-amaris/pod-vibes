@@ -1,14 +1,12 @@
 .header {
-    background-color: vars.$bg-primary;
-    padding: 10px 20px;
-    border-bottom: solid 1px #c2c2c2;
+  background-color: vars.$bg-primary;
+  padding: 10px 20px;
+  border-bottom: solid 1px #c2c2c2;
 
-    .header__a {
-        text-decoration: none;
-        color: vars.$c-primary;
-        font-size: 1.8rem;
-        font-weight: vars.$font-weight-bold;
-    }
+  .header__a {
+    text-decoration: none;
+    color: vars.$c-primary;
+    font-size: 1.8rem;
+    font-weight: vars.$font-weight-bold;
+  }
 }
-
-
