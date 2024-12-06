@@ -29,7 +29,7 @@ jobs:
       run: yarn install
 
     - name: Run ESLint
-      run: yarn eslint . --ext .js,.ts,.tsx
+      run: yarn eslint .
 
     - name: Run Prettier Check
       run: yarn prettier --check .
