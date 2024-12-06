@@ -20,7 +20,10 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18 # Cambiado a una versión compatible
+        node-version: 20 # Asegura una versión compatible con las dependencias
+
+    - name: Clear Yarn Cache
+      run: yarn cache clean
 
     - name: Install dependencies
       run: yarn install
