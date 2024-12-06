@@ -6,7 +6,6 @@
 .pnp.js
 
 # testing
-__tests__/
 
 # production
 /build
