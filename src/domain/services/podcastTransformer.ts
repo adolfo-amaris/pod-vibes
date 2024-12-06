@@ -7,7 +7,7 @@ export const transformPodcasts = (rawPodcasts: PodcastAPIResponse[]): Podcast[] 
             try {
                 return Podcast.fromApiResponse(entry); // Usar el método estático de la entidad
             } catch (error) {
-                console.warn("Datos incompletos en el podcast:", entry, error);
+                // console.warn("Datos incompletos en el podcast:", entry, error);
                 return undefined;
             }
         })
