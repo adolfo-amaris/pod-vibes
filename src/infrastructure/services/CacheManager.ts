@@ -1,10 +1,10 @@
 export interface ICacheManager {
-    getCache(key: string, duration: number): any | null;
-    setCache(key: string, data: any): void;
+    getCache<T>(key: string, duration: number): T | null;
+    setCache<T>(key: string, data: T): void;
 }
 
 export class CacheManager implements ICacheManager {
-    getCache(key: string, duration: number): any | null {
+    getCache<T>(key: string, duration: number): T | null {
         const cachedData = localStorage.getItem(key);
         const cachedTimestamp = localStorage.getItem(`${key}_timestamp`);
         if (cachedData && cachedTimestamp) {
@@ -16,7 +16,7 @@ export class CacheManager implements ICacheManager {
         return null;
     }
 
-    setCache(key: string, data: any): void {
+    setCache<T>(key: string, data: T): void {
         localStorage.setItem(key, JSON.stringify(data));
         localStorage.setItem(`${key}_timestamp`, Date.now().toString());
     }

@@ -1,3 +1,5 @@
+import { PodcastAPIResponse } from "./../types/apiResponses";
+
 export class Podcast {
     constructor(
         public readonly id: string,
@@ -27,7 +29,7 @@ export class Podcast {
     }
 
     // Método estático para transformar datos de la API a una instancia de Podcast
-    public static fromApiResponse(data: any): Podcast {
+    public static fromApiResponse(data: PodcastAPIResponse): Podcast {
         if (!data) {
             throw new Error("Los datos del podcast no son válidos.");
         }
