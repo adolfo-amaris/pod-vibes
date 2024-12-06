@@ -6,62 +6,69 @@ import { NavigationProvider } from '../../src/application/context/NavigationCont
 import Header from './../../src/ui/components/Header';
 
 describe('Header Component', () => {
-    test('muestra el texto Podcaster en el header', () => {
-        render(
-            <BrowserRouter
-                future={{
-                    v7_relativeSplatPath: true,
-                    v7_startTransition: true,
-                }}>
-                <NavigationProvider>
-                    <LoadingContext.Provider value={{ loading: false, setLoading: jest.fn() }}>
-                        <Header />
-                    </LoadingContext.Provider>
-                </NavigationProvider>
-            </BrowserRouter>
-        );
+  test('muestra el texto Podcaster en el header', () => {
+    render(
+      <BrowserRouter
+        future={{
+          v7_relativeSplatPath: true,
+          v7_startTransition: true,
+        }}
+      >
+        <NavigationProvider>
+          <LoadingContext.Provider
+            value={{ loading: false, setLoading: jest.fn() }}
+          >
+            <Header />
+          </LoadingContext.Provider>
+        </NavigationProvider>
+      </BrowserRouter>
+    );
 
-        const title = screen.getByText(/Podcaster/i);
-        expect(title).toBeInTheDocument();
-    });
+    const title = screen.getByText(/Podcaster/i);
+    expect(title).toBeInTheDocument();
+  });
 
-    test('muestra el indicador de carga cuando está cargando', () => {
-        render(
-            <BrowserRouter
-                future={{
-                    v7_relativeSplatPath: true,
-                    v7_startTransition: true,
-                }}>
-                <NavigationProvider>
-                    <LoadingContext.Provider value={{ loading: true, setLoading: jest.fn() }}>
-                        <Header />
-                    </LoadingContext.Provider>
-                </NavigationProvider>
+  test('muestra el indicador de carga cuando está cargando', () => {
+    render(
+      <BrowserRouter
+        future={{
+          v7_relativeSplatPath: true,
+          v7_startTransition: true,
+        }}
+      >
+        <NavigationProvider>
+          <LoadingContext.Provider
+            value={{ loading: true, setLoading: jest.fn() }}
+          >
+            <Header />
+          </LoadingContext.Provider>
+        </NavigationProvider>
+      </BrowserRouter>
+    );
 
-            </BrowserRouter>
-        );
+    const loadingIndicator = screen.getByRole('status');
+    expect(loadingIndicator).toBeInTheDocument();
+  });
 
-        const loadingIndicator = screen.getByRole('status');
-        expect(loadingIndicator).toBeInTheDocument();
-    });
+  test('no muestra el indicador de carga cuando no está cargando', () => {
+    render(
+      <BrowserRouter
+        future={{
+          v7_relativeSplatPath: true,
+          v7_startTransition: true,
+        }}
+      >
+        <NavigationProvider>
+          <LoadingContext.Provider
+            value={{ loading: false, setLoading: jest.fn() }}
+          >
+            <Header />
+          </LoadingContext.Provider>
+        </NavigationProvider>
+      </BrowserRouter>
+    );
 
-    test('no muestra el indicador de carga cuando no está cargando', () => {
-        render(
-            <BrowserRouter
-                future={{
-                    v7_relativeSplatPath: true,
-                    v7_startTransition: true,
-                }}>
-                <NavigationProvider>
-                    <LoadingContext.Provider value={{ loading: false, setLoading: jest.fn() }}>
-                        <Header />
-                    </LoadingContext.Provider>
-                </NavigationProvider>
-
-            </BrowserRouter>
-        );
-
-        const loadingIndicator = screen.queryByRole('status');
-        expect(loadingIndicator).not.toBeInTheDocument();
-    });
+    const loadingIndicator = screen.queryByRole('status');
+    expect(loadingIndicator).not.toBeInTheDocument();
+  });
 });

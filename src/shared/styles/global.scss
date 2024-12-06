@@ -1,84 +1,77 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: vars.$font-family-base;
-    font-size: vars.$font-size-generic;
+  margin: 0;
+  padding: 0;
+  font-family: vars.$font-family-base;
+  font-size: vars.$font-size-generic;
 }
 
 *::-webkit-scrollbar {
-    width: 12px;
+  width: 12px;
 }
 
 *::-webkit-scrollbar-track {
-    background: vars.$bg-secondary;
+  background: vars.$bg-secondary;
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: vars.$c-primary;
-    border-radius: 20px;
-    border: 3px solid vars.$bg-secondary;
+  background-color: vars.$c-primary;
+  border-radius: 20px;
+  border: 3px solid vars.$bg-secondary;
 }
 
-
 // Efecto de sombra cajas
-.boxstyles{
-    border: 1px solid vars.$bg-secondary;
-    box-shadow: vars.$box-shadow;
-    border-radius: 8px;
+.boxstyles {
+  border: 1px solid vars.$bg-secondary;
+  box-shadow: vars.$box-shadow;
+  border-radius: 8px;
 }
 
 // Efecto hover
 .hoverEffect {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: pointer;
 
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    }
-
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
 }
-
-
 
 // #region Custom Flex
 
-
 :is(.flex, .flex-column, .flex-center, .flex-space-between) {
-    display: flex;
+  display: flex;
 }
 
 .flex-center {
-    align-items: center;
+  align-items: center;
 }
 
 .flex-column {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .flex-column-center {
-    flex-direction: column;
-    align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .justify-between {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 .justify-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 .justify-end {
-    justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .align-self-end {
-    align-self: flex-end;
+  align-self: flex-end;
 }
-
-
-
 
 // #endregion

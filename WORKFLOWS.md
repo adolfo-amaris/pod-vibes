@@ -1,4 +1,3 @@
-
 # Automatización de Etiquetado con GitHub Actions
 
 ## 1. Descripción
@@ -14,6 +13,7 @@ Este proyecto utiliza un workflow automatizado para crear etiquetas (tags) basad
 Para que el workflow funcione correctamente, se deben cumplir los siguientes requisitos:
 
 1. **Permisos del Workflow:**
+
    - Habilitar permisos de lectura y escritura para GitHub Actions:
      - Ir a **Settings** > **Actions** > **General**.
      - En la sección **Workflow permissions**, seleccionar **Read and write permissions**.
@@ -25,6 +25,7 @@ Para que el workflow funcione correctamente, se deben cumplir los siguientes req
 ## 3. Cómo Funciona el Workflow
 
 1. **Acciones Disparadoras:**
+
    - El workflow se ejecuta en cada push a la rama `main`.
 
 2. **Pasos del Workflow:**
@@ -37,6 +38,7 @@ Para que el workflow funcione correctamente, se deben cumplir los siguientes req
 ## 4. Ejemplo de Uso
 
 **Paso 1:** Incrementar la versión en `package.json`.
+
 ```json
 {
   "version": "x.x.x"
@@ -44,6 +46,7 @@ Para que el workflow funcione correctamente, se deben cumplir los siguientes req
 ```
 
 **Paso 2:** Confirmar y subir los cambios.
+
 ```bash
 git add package.json
 git commit -m "chore: bump version to x.x.x"
@@ -55,6 +58,7 @@ git push origin main
 ## 5. Detalles Técnicos
 
 **Archivo YAML del Workflow:**
+
 ```yaml
 name: Tag on Version Change
 

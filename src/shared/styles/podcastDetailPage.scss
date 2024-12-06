@@ -1,172 +1,145 @@
 .boxdetail {
-    display: grid;
-    grid-template-columns: 25% 70%;
-    gap: 5%;
-    width: 95%;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: 25% 70%;
+  gap: 5%;
+  width: 95%;
+  margin: 0 auto;
 
+  .boxdetail__container {
+    position: sticky;
+    top: 60px;
+    height: calc(80vh - -30px);
+    padding: 16px;
+    text-align: center;
+    box-shadow: vars.$box-shadow;
+    margin: 15px;
 
+    h2 {
+      color: vars.$c-secondary;
+    }
 
-    .boxdetail__container {
-        position: sticky;
-        top: 60px;
-        height: calc(80vh - -30px);
-        padding: 16px;
+    .boxdetail__boxpodcast {
+      text-align: left;
+
+      hr {
+        width: 90%;
+        border: solid 0.5px #f7f7f7;
+      }
+
+      .boxpodcast_img {
+        max-width: 75%;
+        margin: 20px auto;
+        border-radius: 8px;
         text-align: center;
-        box-shadow: vars.$box-shadow;
-        margin: 15px;
+        cursor: pointer;
 
+        &:hover {
+          box-shadow: vars.$box-shadow;
+        }
+      }
 
+      .boxpodcast_name {
+        padding: 0px 20px;
 
-        h2 {
-            color: vars.$c-secondary
+        h1 {
+          margin-bottom: 0;
+          font-size: 1.4vw;
         }
 
-
-        .boxdetail__boxpodcast {
-            text-align: left;
-
-            hr {
-                width: 90%;
-                border: solid 0.5px #f7f7f7;
-            }
-
-
-            .boxpodcast_img {
-                max-width: 75%;
-                margin: 20px auto;
-                border-radius: 8px;
-                text-align: center;
-                cursor: pointer;
-
-                &:hover {
-                    box-shadow: vars.$box-shadow;
-                }
-            }
-
-            .boxpodcast_name {
-                padding: 0px 20px;
-
-                h1 {
-                    margin-bottom: 0;
-                    font-size: 1.4vw;
-                }
-
-                h3 {
-                    color: vars.$c-tertiary;
-                    margin-top: 0;
-                    font-style: italic;
-                    font-size: 1vw;
-                }
-            }
-
-            .boxpodcast_description {
-                margin-bottom: 5px;
-                font-style: italic;
-                font-size: 0.8vw;
-                word-wrap: break-word;
-                height: calc(20vh + 30px);
-                overflow-y: auto;
-        
-
-                span {
-                    font-weight: vars.$font-weight-bold;
-                }
-            }
-
-
+        h3 {
+          color: vars.$c-tertiary;
+          margin-top: 0;
+          font-style: italic;
+          font-size: 1vw;
         }
+      }
 
-        @media (max-width:768px) {
-            position: relative;
-            height: calc(80vh + 195px);
+      .boxpodcast_description {
+        margin-bottom: 5px;
+        font-style: italic;
+        font-size: 0.8vw;
+        word-wrap: break-word;
+        height: calc(20vh + 30px);
+        overflow-y: auto;
+
+        span {
+          font-weight: vars.$font-weight-bold;
         }
-
-
+      }
     }
 
-    .boxepisode__list {
-        // width: 60%;
-        
-        .boxepisode__header {
-            margin: 20px 0;
-            padding: 10px;
-            .boxepisode__title {
-                margin: 0;
-            }
-            
-        }
+    @media (max-width: 768px) {
+      position: relative;
+      height: calc(80vh + 195px);
+    }
+  }
 
+  .boxepisode__list {
+    // width: 60%;
 
-        .container__title {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 20px;
-            padding: 20px;
-        }
-
-
-        .episodes {
-            gap: 15px;
-            padding: 30px;
-
-            .episodes__card {
-                flex-wrap: wrap;
-                justify-content: space-between;
-                padding: 15px;
-                background-color: #f4f4f4;
-                border-radius: 8px;
-
-
-                .episodes__card-title {
-                    flex: 1 1 60%;
-                    color: vars.$c-primary;
-                    font-weight: vars.$font-weight-medium;
-                    &.bold{
-                        font-weight: vars.$font-weight-bold;
-                    }
-                }
-
-                .episodes__card-date,
-                .episodes__card-duration {
-                    flex: 1 1 calc(20% - 10px);
-                    color: #666;
-                    text-align: center;
-                    &.bold{
-                        font-weight: vars.$font-weight-bold;
-                    }
-                }
-
-            }
-
-
-
-
-
-
-        }
-
-
-        @media (max-width: 600px) {
-            .episodes__card {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .episodes__card-title,
-            .episodes__card-date,
-            .episodes__card-duration {
-                flex: 1 1 100%;
-                text-align: left;
-            }
-        }
-
+    .boxepisode__header {
+      margin: 20px 0;
+      padding: 10px;
+      .boxepisode__title {
+        margin: 0;
+      }
     }
 
-    @media (max-width:768px) {
-        grid-template-columns: 1fr;
+    .container__title {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+      padding: 20px;
     }
 
+    .episodes {
+      gap: 15px;
+      padding: 30px;
 
+      .episodes__card {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: #f4f4f4;
+        border-radius: 8px;
 
+        .episodes__card-title {
+          flex: 1 1 60%;
+          color: vars.$c-primary;
+          font-weight: vars.$font-weight-medium;
+          &.bold {
+            font-weight: vars.$font-weight-bold;
+          }
+        }
+
+        .episodes__card-date,
+        .episodes__card-duration {
+          flex: 1 1 calc(20% - 10px);
+          color: #666;
+          text-align: center;
+          &.bold {
+            font-weight: vars.$font-weight-bold;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 600px) {
+      .episodes__card {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .episodes__card-title,
+      .episodes__card-date,
+      .episodes__card-duration {
+        flex: 1 1 100%;
+        text-align: left;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
