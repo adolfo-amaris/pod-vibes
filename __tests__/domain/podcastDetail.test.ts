@@ -1,4 +1,4 @@
-import { PodcastDetail } from "./../../src/domain/entities/PodcastDetail";
+import { PodcastDetail } from "./../../src/domain/entities/podcastDetail";
 import { Episode } from "./../../src/domain/entities/episode";
 
 describe("PodcastDetail", () => {
@@ -28,7 +28,7 @@ describe("PodcastDetail", () => {
             name: "Podcast Name",
             description: "Descripción del podcast",
             artworkUrl: "artwork.jpg",
-            episodes: undefined, // Sin episodios
+            episodes: [], // Sin episodios
         });
 
         expect(podcastDetail.id).toBe("123");
