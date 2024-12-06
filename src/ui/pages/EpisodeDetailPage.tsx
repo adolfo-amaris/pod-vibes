@@ -19,7 +19,6 @@ const EpisodeDetailPage: React.FC = () => {
 	}
 
 	const { podcastDetails, loading, error } = usePodcastDetails(podcastId || '');
-	console.log("Episode ID desde params:", episodeId);
 
 	if (loading) {
 		return <p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando episodio...</p>;

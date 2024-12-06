@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { transformPodcasts } from '../../domain/services/podcastTransformer';
 import { usePodcastService } from '../../infrastructure/context/PodcastServiceContext';
 import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
 import { useLoading } from './../../shared/context/LoadingContext';
