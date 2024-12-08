@@ -7,11 +7,11 @@ describe('transformPodcasts', () => {
       feed: {
         entry: [
           {
-            id: { attributes: { "im:id": "1" } },
-            "im:name": { label: "Tech Talks" },
-            "im:image": [{ label: "url", attributes: { height: "170" } }],
-            "im:artist": { label: "John Doe" },
-            summary: { label: "A podcast about tech" },
+            id: { attributes: { 'im:id': '1' } },
+            'im:name': { label: 'Tech Talks' },
+            'im:image': [{ label: 'url', attributes: { height: '170' } }],
+            'im:artist': { label: 'John Doe' },
+            summary: { label: 'A podcast about tech' },
           },
         ],
       },
@@ -20,11 +20,11 @@ describe('transformPodcasts', () => {
     const podcasts = transformPodcasts(apiResponse);
 
     expect(podcasts).toHaveLength(1);
-    expect(podcasts[0].id).toBe("1");
-    expect(podcasts[0].title).toBe("Tech Talks");
-    expect(podcasts[0].author).toBe("John Doe");
-    expect(podcasts[0].image).toBe("url");
-    expect(podcasts[0].summary).toBe("A podcast about tech");
+    expect(podcasts[0].id).toBe('1');
+    expect(podcasts[0].title).toBe('Tech Talks');
+    expect(podcasts[0].author).toBe('John Doe');
+    expect(podcasts[0].image).toBe('url');
+    expect(podcasts[0].summary).toBe('A podcast about tech');
   });
 
   it('debería filtrar podcasts con datos incompletos', () => {
@@ -32,11 +32,11 @@ describe('transformPodcasts', () => {
       feed: {
         entry: [
           {
-            id: { attributes: { "im:id": "1" } },
-            "im:name": { label: "Tech Talks" },
-            "im:image": [],
-            "im:artist": { label: "John Doe" },
-            summary: { label: "" },
+            id: { attributes: { 'im:id': '1' } },
+            'im:name': { label: 'Tech Talks' },
+            'im:image': [],
+            'im:artist': { label: 'John Doe' },
+            summary: { label: '' },
           },
         ],
       },

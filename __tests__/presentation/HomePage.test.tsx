@@ -9,7 +9,9 @@ import { LoadingProvider } from '../../src/shared/context/LoadingContext';
 import { NavigationProvider } from '../../src/podcastManagement/presentation/context/NavigationContext';
 import { PodcastServiceProvider } from '../../src/podcastManagement/infrastructure/context/PodcastServiceContext';
 
-jest.mock('./../../src/podcastManagement/infrastructure/repositories/podcastService');
+jest.mock(
+  './../../src/podcastManagement/infrastructure/repositories/podcastService'
+);
 
 describe('PopularPodcastsPage Component', () => {
   const mockPodcasts = [
