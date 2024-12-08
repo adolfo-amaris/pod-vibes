@@ -1,4 +1,4 @@
-import { Episode } from './../../src/domain/entities/episode';
+import { Episode } from './../../src/podcastManagement/domain/entities/episode';
 
 describe('Episode', () => {
   it('debería crear una instancia válida con datos correctos', () => {
