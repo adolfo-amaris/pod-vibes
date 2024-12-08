@@ -93,7 +93,7 @@ podcaster/
 │   │   │   └── Header.tsx
 │   │   ├── pages/
 │   │   │   ├── EpisodeDetailPage.tsx
-│   │   │   ├── HomePage.tsx
+│   │   │   ├── PopularPodcastsPage.tsx
 │   │   │   └── PodcastDetailPage.tsx
 │   │   ├── hooks/
 │   │   │   └── useHomeNavigation.ts
@@ -105,7 +105,7 @@ podcaster/
 │   │   │   ├── card.scss
 │   │   │   ├── episodeDetailPage.scss
 │   │   │   ├── filter.scss
-│   │   │   ├── homePage.scss
+│   │   │   ├── PopularPodcastsPage.scss
 │   │   │   ├── podcastDetailPage.scss
 │   │   │   ├── global.scss
 │   │   │   └── _vars.scss
@@ -146,7 +146,7 @@ podcaster/
 
 ## Pruebas Unitarias
 
-- **HomePage:**
+- **PopularPodcastsPage:**
   - Verifica el renderizado correcto del listado de podcasts.
   - Simula búsqueda y valida filtrado.
 - **Header:**

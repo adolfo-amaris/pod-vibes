@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { IPodcastService } from '../../application/interfaces/IPodcastService';
-import { CacheManager } from './../services/CacheManager';
+import { CacheManager } from '../services/CacheManager';
 import {
-  PodcastAPIResponse,
-  PodcastDetailsAPIResponse,
   PodcastDetailsRawAPIResponse,
-  PodcastFeedResponse,
-} from '../../domain/types/apiResponses';
+  PodcastFeedAPIResponse,
+} from '../types/apiResponses';
 import { Podcast } from '../../domain/entities/podcast';
-import { transformPodcasts } from '../../domain/services/podcastTransformer';
+import { Episode } from '../../domain/entities/episode';
+import { transformPodcasts } from '../transformers/podcastTransformer';
+import { transformPodcastDetails } from '../transformers/podcastDetailsTransformer';
 
 // Clase para manejar la lógica del servicio
-export class PodcastService implements IPodcastService {
+export class PodcastServiceImpl implements IPodcastService {
   private baseUrl: string;
   private proxyUrl: string;
   private httpClient: typeof axios;
@@ -39,14 +39,14 @@ export class PodcastService implements IPodcastService {
   // Obtener los podcasts más populares
   public async fetchTopPodcasts(): Promise<Podcast[]> {
     const endpoint = '/us/rss/toppodcasts/limit=100/genre=1310/json';
-    const data = await this.fetchFromApi<PodcastFeedResponse>(endpoint);
+    const data = await this.fetchFromApi<PodcastFeedAPIResponse>(endpoint);
 
     // Validar que los datos contengan `feed.entry`
     if (!data || !data.feed || !Array.isArray(data.feed.entry)) {
       throw new Error('La respuesta de la API no contiene un formato válido.');
     }
 
-    return transformPodcasts(data.feed.entry as PodcastAPIResponse[]);
+    return transformPodcasts(data);
   }
 
   // Obtener los podcasts más populares con caché
@@ -66,60 +66,29 @@ export class PodcastService implements IPodcastService {
   }
 
   // Obtener detalles de un podcast
-  public async fetchPodcastDetails(
-    podcastId: string
-  ): Promise<PodcastDetailsAPIResponse> {
+  public async fetchPodcastDetails(podcastId: string): Promise<{ podcast: Podcast; episodes: Episode[] }> {
     const endpoint = `/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`;
-    const rawData =
-      await this.fetchFromApi<PodcastDetailsRawAPIResponse>(endpoint);
+    const rawData: PodcastDetailsRawAPIResponse = await this.fetchFromApi<PodcastDetailsRawAPIResponse>(endpoint);
 
-    if (
-      !rawData ||
-      !rawData.results ||
-      !Array.isArray(rawData.results) ||
-      rawData.results.length === 0
-    ) {
+    if (!rawData || !rawData.results || !Array.isArray(rawData.results) || rawData.results.length === 0) {
       throw new Error('La respuesta de la API no contiene datos válidos.');
     }
 
-    const [details, ...episodes] = rawData.results;
-
-    if (
-      !details ||
-      details.wrapperType !== 'track' ||
-      details.kind !== 'podcast'
-    ) {
-      throw new Error('El campo `details` no contiene un podcast válido.');
-    }
+    const { podcast, episodes } = transformPodcastDetails(rawData);
 
     return {
-      details: {
-        id: details.trackId.toString(),
-        name: details.trackName,
-        description: details.collectionName || 'Sin descripción',
-        artworkUrl: details.artworkUrl600 || '',
-      },
-      episodes: episodes.map((episode) => ({
-        id: episode.trackId.toString(),
-        name: episode.trackName || 'Sin título',
-        description: episode.description || 'Descripción no disponible.',
-        duration: episode.trackTimeMillis || 0,
-        audioUrl: episode.episodeUrl || '',
-        releaseDate: episode.releaseDate || 'Fecha desconocida',
-      })),
+      podcast,
+      episodes,
     };
   }
 
   // Obtener detalles del podcast con caché
   public async fetchPodcastDetailsWithCache(
     podcastId: string
-  ): Promise<PodcastDetailsAPIResponse> {
+  ): Promise<{ podcast: Podcast; episodes: Episode[] }> {
     const cacheKey = `podcast_${podcastId}`;
     const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
-    const cachedData = this.cacheManager.getCache<PodcastDetailsAPIResponse>(
-      cacheKey,
-      cacheDuration
-    );
+    const cachedData = this.cacheManager.getCache<{ podcast: Podcast; episodes: Episode[] }>(cacheKey, cacheDuration);
 
     if (cachedData) return cachedData;
 
@@ -130,4 +99,4 @@ export class PodcastService implements IPodcastService {
 }
 
 // Instancia del servicio exportada
-export const podcastService = new PodcastService();
+export const podcastServiceImpl = new PodcastServiceImpl();

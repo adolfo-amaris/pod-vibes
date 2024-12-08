@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePodcastService } from '../../infrastructure/context/PodcastServiceContext';
-import { usePodcastFilter } from '../../application/use-cases/usePodcastFilter';
-import { useLoading } from './../../../shared/context/LoadingContext';
-import Card from './../components/PodcastCard';
-import Filter from './../components/Filter';
-import './../../../shared/styles/homePage.scss';
+import { usePodcastUseCases } from '../context/PodcastProvider';
+import { usePodcastFilter } from '../hooks/usePodcastFilter';
+import { useLoading } from '../../../shared/context/LoadingContext';
+import Card from '../components/PodcastCard';
+import Filter from '../components/Filter';
+import './../../../shared/styles/PopularPodcastsPage.scss';
 import { Podcast } from '../../domain/entities/podcast';
 
-const HomePage: React.FC = () => {
-  const podcastService = usePodcastService(); // Usar el servicio desde el contexto
+const PopularPodcastsPage: React.FC = () => {
+  const { getPopularPodcastsUseCase } = usePodcastUseCases(); // Usar el caso de uso desde el contexto
   const initialPodcasts = JSON.parse(localStorage.getItem('podcasts') || '[]');
   const [podcasts, setPodcasts] = useState<Podcast[]>(initialPodcasts);
   const { filter, setFilter, filteredPodcasts } = usePodcastFilter(podcasts);
@@ -20,6 +20,8 @@ const HomePage: React.FC = () => {
     const loadPodcasts = async () => {
       try {
         setLoading(true);
+
+        // Revisar si los podcasts ya están almacenados localmente
         const storedPodcasts = localStorage.getItem('podcasts');
         if (storedPodcasts) {
           const parsedPodcasts = JSON.parse(storedPodcasts);
@@ -28,13 +30,12 @@ const HomePage: React.FC = () => {
           return;
         }
 
-        // Si no están en localStorage, cargar desde el API
-        const transformedPodcasts =
-          await podcastService.fetchTopPodcastsWithCache();
-        setPodcasts(transformedPodcasts);
+        // Si no están en localStorage, cargar desde el caso de uso
+        const fetchedPodcasts = await getPopularPodcastsUseCase.execute();
+        setPodcasts(fetchedPodcasts);
 
         // Guardar los datos transformados en localStorage
-        localStorage.setItem('podcasts', JSON.stringify(transformedPodcasts));
+        localStorage.setItem('podcasts', JSON.stringify(fetchedPodcasts));
       } catch (error) {
         console.error('Error al cargar los podcasts:', error);
       } finally {
@@ -43,7 +44,7 @@ const HomePage: React.FC = () => {
     };
 
     loadPodcasts();
-  }, [setLoading, podcastService]);
+  }, [setLoading, getPopularPodcastsUseCase]);
 
   return loading ? (
     <p style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -79,4 +80,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default PopularPodcastsPage;

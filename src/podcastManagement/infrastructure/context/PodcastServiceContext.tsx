@@ -1,12 +1,20 @@
-import React, { createContext, useContext } from 'react';
-import { podcastService } from '../repositories/podcastService';
+import React, { createContext, useContext, ReactNode } from 'react';
+import { PodcastServiceImpl } from '../repositories/podcastServiceImpl';
 import { IPodcastService } from '../../application/interfaces/IPodcastService';
 
+// Crear el contexto
 const PodcastServiceContext = createContext<IPodcastService | null>(null);
 
-export const PodcastServiceProvider: React.FC<{
-  children: React.ReactNode;
-}> = ({ children }) => {
+// Props para el Provider
+interface PodcastServiceProviderProps {
+  children: ReactNode;
+}
+
+// Crear el Provider
+export const PodcastServiceProvider: React.FC<PodcastServiceProviderProps> = ({ children }) => {
+  // Crear una instancia de PodcastServiceImpl
+  const podcastService: IPodcastService = new PodcastServiceImpl();
+
   return (
     <PodcastServiceContext.Provider value={podcastService}>
       {children}
@@ -14,12 +22,11 @@ export const PodcastServiceProvider: React.FC<{
   );
 };
 
+// Hook para consumir el contexto
 export const usePodcastService = (): IPodcastService => {
   const context = useContext(PodcastServiceContext);
   if (!context) {
-    throw new Error(
-      'usePodcastService debe usarse dentro de un PodcastServiceProvider'
-    );
+    throw new Error('usePodcastService debe ser usado dentro de un PodcastServiceProvider');
   }
   return context;
 };

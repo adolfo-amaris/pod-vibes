@@ -1,16 +1,20 @@
-import { PodcastAPIResponse } from './../types/apiResponses';
-
 export class Podcast {
   constructor(
     public readonly id: string,
     public readonly title: string,
     public readonly author: string,
-    public readonly image: string
+    public readonly image: string,
+    public readonly summary: string
   ) {
-    if (!id) throw new Error('El ID del podcast es obligatorio.');
-    if (!title) throw new Error('El título del podcast es obligatorio.');
-    if (!author) throw new Error('El autor del podcast es obligatorio.');
-    if (!image) throw new Error('La URL de la imagen es obligatoria.');
+    this.validateFields();
+  }
+
+  private validateFields(): void {
+    if (!this.id) throw new Error('El ID del podcast es obligatorio.');
+    if (!this.title) throw new Error('El título del podcast es obligatorio.');
+    if (!this.author) throw new Error('El autor del podcast es obligatorio.');
+    if (!this.image) throw new Error('La URL de la imagen es obligatoria.');
+    if (!this.summary) throw new Error('El resumen del podcast es obligatorio.');
   }
 
   // Método para obtener una versión segura de la URL de la imagen
@@ -30,21 +34,4 @@ export class Podcast {
       : this.title;
   }
 
-  // Método estático para transformar datos de la API a una instancia de Podcast
-  public static fromApiResponse(data: PodcastAPIResponse): Podcast {
-    if (!data) {
-      throw new Error('Los datos del podcast no son válidos.');
-    }
-
-    const id = data?.id?.attributes?.['im:id'];
-    const title = data?.['im:name']?.label;
-    const author = data?.['im:artist']?.label;
-    const image = data?.['im:image']?.[2]?.label; // Usa la tercera imagen como predeterminada
-
-    if (!id || !title || !author || !image) {
-      throw new Error('Datos incompletos para crear un Podcast.');
-    }
-
-    return new Podcast(id, title, author, image);
-  }
 }

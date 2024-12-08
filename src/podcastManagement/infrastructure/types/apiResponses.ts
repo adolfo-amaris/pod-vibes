@@ -1,12 +1,13 @@
 // Tipo para la respuesta de podcasts populares
 export interface PodcastAPIResponse {
-  id: { attributes: { 'im:id': string | null } } | null; // Permitir valores nulos
-  'im:name': { label: string | null };
-  'im:artist': { label: string | null };
-  'im:image': { label: string | null }[]; // Permitir arrays vacíos y valores nulos
+  id: { attributes: { "im:id": string } };
+  "im:name": { label: string };
+  "im:image": { label: string; attributes: { height: string } }[];
+  "im:artist": { label: string };
+  summary: { label: string };
 }
 
-export interface PodcastFeedResponse {
+export interface PodcastFeedAPIResponse {
   feed: {
     entry: PodcastAPIResponse[];
   };
@@ -22,8 +23,8 @@ export interface PodcastDetailsAPIResponse {
   };
   episodes: {
     id: string;
-    name: string;
-    description: string;
+    title: string;
+    description?: string;
     duration: number;
     audioUrl: string;
     releaseDate: string;
@@ -36,6 +37,7 @@ export interface PodcastDetailsRawAPIResponse {
     kind: string;
     trackId: number;
     trackName: string;
+    artistName: string;
     collectionName?: string;
     artworkUrl600?: string;
     description?: string;
@@ -99,12 +101,12 @@ export interface PodcastDetailsResponse {
 export interface PodcastDetailAPIResponse {
   id: string;
   name: string;
-  description?: string;
-  artworkUrl?: string;
-  episodes: Array<{
+  description: string;
+  artworkUrl: string;
+  episodes?: Array<{
     id: string;
-    name: string;
-    description: string;
+    title: string;
+    description?: string;
     duration: number;
     audioUrl: string;
     releaseDate: string;

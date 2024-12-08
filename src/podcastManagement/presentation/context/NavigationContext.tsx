@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Episode } from '../../domain/entities/podcast';
+import { Episode } from '../../domain/entities/episode';
 
 interface Podcast {
   id: string;

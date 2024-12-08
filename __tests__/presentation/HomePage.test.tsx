@@ -3,15 +3,15 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import HomePage from './../../src/podcastManagement/ui/pages/HomePage';
-import { podcastService } from './../../src/podcastManagement/infrastructure/repositories/podcastService';
-import { LoadingProvider } from './../../src/shared/context/LoadingContext';
-import { NavigationProvider } from './../../src/podcastManagement/application/context/NavigationContext';
-import { PodcastServiceProvider } from './../../src/podcastManagement/infrastructure/context/PodcastServiceContext';
+import PopularPodcastsPage from '../../src/podcastManagement/presentation/pages/PopularPodcastsPage';
+import { podcastService } from '../../src/podcastManagement/infrastructure/repositories/podcastServiceImpl';
+import { LoadingProvider } from '../../src/shared/context/LoadingContext';
+import { NavigationProvider } from '../../src/podcastManagement/presentation/context/NavigationContext';
+import { PodcastServiceProvider } from '../../src/podcastManagement/infrastructure/context/PodcastServiceContext';
 
 jest.mock('./../../src/podcastManagement/infrastructure/repositories/podcastService');
 
-describe('HomePage Component', () => {
+describe('PopularPodcastsPage Component', () => {
   const mockPodcasts = [
     {
       id: '1',
@@ -71,7 +71,7 @@ describe('HomePage Component', () => {
           <LoadingProvider>
             <PodcastServiceProvider>
               <NavigationProvider>
-                <HomePage />
+                <PopularPodcastsPage />
               </NavigationProvider>
             </PodcastServiceProvider>
           </LoadingProvider>
@@ -102,7 +102,7 @@ describe('HomePage Component', () => {
           <LoadingProvider>
             <PodcastServiceProvider>
               <NavigationProvider>
-                <HomePage />
+                <PopularPodcastsPage />
               </NavigationProvider>
             </PodcastServiceProvider>
           </LoadingProvider>
