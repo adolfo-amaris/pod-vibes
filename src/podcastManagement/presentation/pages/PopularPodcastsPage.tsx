@@ -5,7 +5,7 @@ import { usePodcastFilter } from '../hooks/usePodcastFilter';
 import { useLoading } from '../../../shared/context/LoadingContext';
 import Card from '../components/PodcastCard';
 import Filter from '../components/Filter';
-import './../../../shared/styles/PopularPodcastsPage.scss';
+import './../../../shared/styles/popularPodcastsPage.scss';
 import { Podcast } from '../../domain/entities/podcast';
 
 const PopularPodcastsPage: React.FC = () => {

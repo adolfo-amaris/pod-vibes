@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { usePodcastUseCases } from '../context/PodcastProvider';
 import { usePodcastDetails } from '../hooks/usePodcastDetails';
 import { useLoading } from '../../../shared/context/LoadingContext';
-import '../../../shared/styles/EpisodeDetailPage.scss';
+import '../../../shared/styles/episodeDetailPage.scss';
 
 const EpisodeDetailPage: React.FC = () => {
   const { podcastId, episodeId } = useParams<{ podcastId: string; episodeId: string }>();
