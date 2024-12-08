@@ -8,7 +8,10 @@ type UsePodcastDetailsParams = {
   getPodcastDetailsUseCase: GetPodcastDetailsUseCase;
 };
 
-export const usePodcastDetails = ({ podcastId, getPodcastDetailsUseCase }: UsePodcastDetailsParams) => {
+export const usePodcastDetails = ({
+  podcastId,
+  getPodcastDetailsUseCase,
+}: UsePodcastDetailsParams) => {
   const [podcast, setPodcast] = useState<Podcast | null>(null);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [loading, setLoading] = useState(true);

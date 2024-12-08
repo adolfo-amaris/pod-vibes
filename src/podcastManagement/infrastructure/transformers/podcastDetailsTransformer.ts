@@ -17,8 +17,6 @@ export const transformPodcastDetails = (
     throw new Error('El campo principal no contiene un podcast válido.');
   }
 
-
-
   const podcast = new Podcast(
     podcastData.trackId.toString(),
     podcastData.trackName,
@@ -27,20 +25,20 @@ export const transformPodcastDetails = (
     podcastData.description || 'No description available'
   );
 
-  const episodes = episodeData.map((episode) => {
-    if (episode.kind !== 'podcast-episode') return null;
+  const episodes = episodeData
+    .map((episode) => {
+      if (episode.kind !== 'podcast-episode') return null;
 
-    return new Episode(
-      episode.trackId.toString(),
-      episode.trackName || 'Untitled',
-      episode.description || 'No description available',
-      episode.releaseDate || 'Unknown', // Mantener como string
-      episode.trackTimeMillis || 0,
-      episode.episodeUrl || ''
-    );
-  }).filter((episode) => episode !== null);
-
-
+      return new Episode(
+        episode.trackId.toString(),
+        episode.trackName || 'Untitled',
+        episode.description || 'No description available',
+        episode.releaseDate || 'Unknown', // Mantener como string
+        episode.trackTimeMillis || 0,
+        episode.episodeUrl || ''
+      );
+    })
+    .filter((episode) => episode !== null);
 
   return { podcast, episodes };
 };

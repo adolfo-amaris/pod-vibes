@@ -66,11 +66,19 @@ export class PodcastServiceImpl implements IPodcastService {
   }
 
   // Obtener detalles de un podcast
-  public async fetchPodcastDetails(podcastId: string): Promise<{ podcast: Podcast; episodes: Episode[] }> {
+  public async fetchPodcastDetails(
+    podcastId: string
+  ): Promise<{ podcast: Podcast; episodes: Episode[] }> {
     const endpoint = `/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`;
-    const rawData: PodcastDetailsRawAPIResponse = await this.fetchFromApi<PodcastDetailsRawAPIResponse>(endpoint);
+    const rawData: PodcastDetailsRawAPIResponse =
+      await this.fetchFromApi<PodcastDetailsRawAPIResponse>(endpoint);
 
-    if (!rawData || !rawData.results || !Array.isArray(rawData.results) || rawData.results.length === 0) {
+    if (
+      !rawData ||
+      !rawData.results ||
+      !Array.isArray(rawData.results) ||
+      rawData.results.length === 0
+    ) {
       throw new Error('La respuesta de la API no contiene datos válidos.');
     }
 
@@ -88,7 +96,10 @@ export class PodcastServiceImpl implements IPodcastService {
   ): Promise<{ podcast: Podcast; episodes: Episode[] }> {
     const cacheKey = `podcast_${podcastId}`;
     const cacheDuration = 24 * 60 * 60 * 1000; // 24 horas
-    const cachedData = this.cacheManager.getCache<{ podcast: Podcast; episodes: Episode[] }>(cacheKey, cacheDuration);
+    const cachedData = this.cacheManager.getCache<{
+      podcast: Podcast;
+      episodes: Episode[];
+    }>(cacheKey, cacheDuration);
 
     if (cachedData) return cachedData;
 

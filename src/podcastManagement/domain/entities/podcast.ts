@@ -14,7 +14,8 @@ export class Podcast {
     if (!this.title) throw new Error('El título del podcast es obligatorio.');
     if (!this.author) throw new Error('El autor del podcast es obligatorio.');
     if (!this.image) throw new Error('La URL de la imagen es obligatoria.');
-    if (!this.summary) throw new Error('El resumen del podcast es obligatorio.');
+    if (!this.summary)
+      throw new Error('El resumen del podcast es obligatorio.');
   }
 
   // Método para obtener una versión segura de la URL de la imagen
@@ -33,5 +34,4 @@ export class Podcast {
       ? `${this.title.substring(0, maxLength)}...`
       : this.title;
   }
-
 }

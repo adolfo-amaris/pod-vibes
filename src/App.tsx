@@ -30,7 +30,10 @@ const App: React.FC = () => {
                 <Route path="/" element={<PopularPodcastsPage />} />
 
                 {/* Ruta para el detalle de un episodio */}
-                <Route path="/podcast/:podcastId" element={<PodcastDetailPage />}>
+                <Route
+                  path="/podcast/:podcastId"
+                  element={<PodcastDetailPage />}
+                >
                   <Route
                     path="episode/:episodeId"
                     element={<EpisodeDetailPage />}

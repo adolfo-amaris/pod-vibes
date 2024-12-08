@@ -11,7 +11,9 @@ interface PodcastServiceProviderProps {
 }
 
 // Crear el Provider
-export const PodcastServiceProvider: React.FC<PodcastServiceProviderProps> = ({ children }) => {
+export const PodcastServiceProvider: React.FC<PodcastServiceProviderProps> = ({
+  children,
+}) => {
   // Crear una instancia de PodcastServiceImpl
   const podcastService: IPodcastService = new PodcastServiceImpl();
 
@@ -26,7 +28,9 @@ export const PodcastServiceProvider: React.FC<PodcastServiceProviderProps> = ({ 
 export const usePodcastService = (): IPodcastService => {
   const context = useContext(PodcastServiceContext);
   if (!context) {
-    throw new Error('usePodcastService debe ser usado dentro de un PodcastServiceProvider');
+    throw new Error(
+      'usePodcastService debe ser usado dentro de un PodcastServiceProvider'
+    );
   }
   return context;
 };

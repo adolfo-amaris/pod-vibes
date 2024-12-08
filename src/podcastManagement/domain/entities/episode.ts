@@ -7,7 +7,7 @@ export class Episode {
     public readonly description: string,
     public readonly releaseDate: string,
     public readonly duration: number, // Duración en segundos
-    public readonly audioUrl: string,
+    public readonly audioUrl: string
   ) {
     this.validateFields();
   }
@@ -17,7 +17,6 @@ export class Episode {
     if (!this.title) throw new Error('El título del episodio es obligatorio.');
     if (!this.audioUrl) throw new Error('La URL del audio es obligatoria.');
   }
-
 
   // Método para formatear la duración del episodio
   public formatDuration(): string {
@@ -37,7 +36,7 @@ export class Episode {
       data.description || 'Descripción no disponible.',
       data.releaseDate || 'Fecha desconocida',
       data.duration || 0,
-      data.audioUrl || '',
+      data.audioUrl || ''
     );
   }
 }

@@ -6,7 +6,10 @@ import { useLoading } from '../../../shared/context/LoadingContext';
 import '../../../shared/styles/episodeDetailPage.scss';
 
 const EpisodeDetailPage: React.FC = () => {
-  const { podcastId, episodeId } = useParams<{ podcastId: string; episodeId: string }>();
+  const { podcastId, episodeId } = useParams<{
+    podcastId: string;
+    episodeId: string;
+  }>();
   const { setLoading } = useLoading();
   const { getPodcastDetailsUseCase } = usePodcastUseCases();
 

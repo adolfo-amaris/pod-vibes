@@ -1,12 +1,19 @@
 import { Podcast } from '../../domain/entities/podcast';
-import { PodcastFeedAPIResponse, PodcastAPIResponse } from '../types/apiResponses';
+import {
+  PodcastFeedAPIResponse,
+  PodcastAPIResponse,
+} from '../types/apiResponses';
 
-export const safeTransformPodcast = (entry: PodcastAPIResponse): Podcast | undefined => {
+export const safeTransformPodcast = (
+  entry: PodcastAPIResponse
+): Podcast | undefined => {
   try {
-    const id = entry.id.attributes["im:id"];
-    const name = entry["im:name"].label;
-    const artist = entry["im:artist"].label;
-    const image = entry["im:image"].find((img) => img.attributes.height === "170")?.label || '';
+    const id = entry.id.attributes['im:id'];
+    const name = entry['im:name'].label;
+    const artist = entry['im:artist'].label;
+    const image =
+      entry['im:image'].find((img) => img.attributes.height === '170')?.label ||
+      '';
     const summary = entry.summary.label;
 
     if (!id || !name || !artist || !image || !summary) {

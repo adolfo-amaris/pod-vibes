@@ -1,9 +1,9 @@
 // Tipo para la respuesta de podcasts populares
 export interface PodcastAPIResponse {
-  id: { attributes: { "im:id": string } };
-  "im:name": { label: string };
-  "im:image": { label: string; attributes: { height: string } }[];
-  "im:artist": { label: string };
+  id: { attributes: { 'im:id': string } };
+  'im:name': { label: string };
+  'im:image': { label: string; attributes: { height: string } }[];
+  'im:artist': { label: string };
   summary: { label: string };
 }
 

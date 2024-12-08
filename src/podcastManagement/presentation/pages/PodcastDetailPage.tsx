@@ -27,7 +27,6 @@ const PodcastDetailPage: React.FC = () => {
   // Verificar si la ruta actual coincide con un episodio
   const isEpisodeSelected = useMatch('/podcast/:podcastId/episode/:episodeId');
 
-
   useEffect(() => {
     setLoading(loading);
     return () => setLoading(false);
@@ -83,7 +82,7 @@ const PodcastDetailPage: React.FC = () => {
             <h1 className="boxepisode__title">Episodes {episodes.length}</h1>
           </div>
           <div className="episodes flex flex-column boxstyles">
-            <div className="episodes__card flex boxstyles" >
+            <div className="episodes__card flex boxstyles">
               <div className="episodes__card-title bold">Title</div>
               <div className="episodes__card-date bold"> Date</div>
               <div className="episodes__card-duration bold">Duration</div>
@@ -93,13 +92,17 @@ const PodcastDetailPage: React.FC = () => {
               <div
                 key={episode.id}
                 className="episodes__card flex hoverEffect boxstyles"
-                onClick={() => navigate(`/podcast/${podcastId}/episode/${episode.id}`)}
+                onClick={() =>
+                  navigate(`/podcast/${podcastId}/episode/${episode.id}`)
+                }
               >
                 <div className="episodes__card-title">{episode.title}</div>
                 <div className="episodes__card-date">
                   {new Date(episode.releaseDate).toLocaleDateString()}
                 </div>
-                <div className="episodes__card-duration">{episode.formatDuration()}</div>
+                <div className="episodes__card-duration">
+                  {episode.formatDuration()}
+                </div>
               </div>
             ))}
           </div>
@@ -115,7 +118,6 @@ const PodcastDetailPage: React.FC = () => {
 
       {/* Mostrar el reproductor de episodios si hay un episodio seleccionado */}
       {isEpisodeSelected && <Outlet />}
-
     </div>
   );
 };
