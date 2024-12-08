@@ -2,7 +2,7 @@
 
 Podcaster es una aplicación desarrollada en React que permite a los usuarios explorar podcasts populares, consultar detalles de cada podcast, y visualizar episodios específicos de una manera interactiva y responsiva. El objetivo de este proyecto es demostrar la capacidad de crear una SPA (Single Page Application) modular, escalable, y optimizada, utilizando buenas prácticas de desarrollo.
 
---- 
+---
 
 ## Tabla de Contenidos
 
@@ -17,6 +17,7 @@ Podcaster es una aplicación desarrollada en React que permite a los usuarios ex
 - Próximos Pasos
 
 ## Tecnologías Utilizadas
+
 - **Frontend Framework:** React con TypeScript.
 - **Gestión de Estado:** Context API (LoadingContext, PodcastServiceContext).
 - **Enrutamiento:** React Router v6 con rutas dinámicas.
@@ -24,30 +25,37 @@ Podcaster es una aplicación desarrollada en React que permite a los usuarios ex
 - **Construcción del Proyecto:** Vite para un entorno ágil y ligero.
 
 ### Estilos:
+
 - SASS como preprocesador CSS.
 - Convención BEM para una estructura semántica y mantenible.
 - Construcción del Proyecto: Vite para un desarrollo rápido y ligero.
 
 ### Pruebas unitarias:
+
 - Jest y React Testing Library para pruebas unitarias y de integración.
 - Mocking de localStorage y servicios API.
 
 ## Características Principales
+
 1. **Exploración de Podcasts Populares:**
+
    - Listado de los 100 podcasts más populares con su imagen, título y autor.
    - Filtro de búsqueda en tiempo real.
 
 2. **Detalle del Podcast:**
+
    - Visualización de información detallada del podcast seleccionado.
    - Listado de episodios con título, fecha y duración.
    - Carga dinámica de episodios a través de rutas `/podcast/:podcastId`.
 
 3. **Detalle del Episodio:**
+
    - Visualización completa del episodio seleccionado.
    - Reproducción de audio con un diseño minimalista.
    - Rutas específicas `/podcast/:podcastId/episode/:episodeId`.
 
 4. **Indicador Global de Carga:**
+
    - Gestión centralizada del estado de carga con un indicador visual.
 
 5. **Optimización de Rendimiento:**
@@ -55,7 +63,6 @@ Podcaster es una aplicación desarrollada en React que permite a los usuarios ex
    - Uso de custom hooks para filtrar y manejar datos eficientemente.
 
 ---
-
 
 ## Estructura del Proyecto
 
@@ -86,7 +93,7 @@ podcaster/
 │   │   │   └── Header.tsx
 │   │   ├── pages/
 │   │   │   ├── EpisodeDetailPage.tsx
-│   │   │   ├── HomePage.tsx
+│   │   │   ├── PopularPodcastsPage.tsx
 │   │   │   └── PodcastDetailPage.tsx
 │   │   ├── hooks/
 │   │   │   └── useHomeNavigation.ts
@@ -98,7 +105,7 @@ podcaster/
 │   │   │   ├── card.scss
 │   │   │   ├── episodeDetailPage.scss
 │   │   │   ├── filter.scss
-│   │   │   ├── homePage.scss
+│   │   │   ├── popularPodcastsPage.scss
 │   │   │   ├── podcastDetailPage.scss
 │   │   │   ├── global.scss
 │   │   │   └── _vars.scss
@@ -127,6 +134,7 @@ podcaster/
 ---
 
 ## Patrones y Principios Aplicados
+
 1. **SOLID:**
    - Separación de lógica en servicios (`podcastService`) y contextos.
 2. **KISS y DRY:**
@@ -137,7 +145,8 @@ podcaster/
 ---
 
 ## Pruebas Unitarias
-- **HomePage:**
+
+- **PopularPodcastsPage:**
   - Verifica el renderizado correcto del listado de podcasts.
   - Simula búsqueda y valida filtrado.
 - **Header:**
@@ -149,9 +158,8 @@ podcaster/
 
 ---
 
-
-
 ## Cambios Recientes
+
 - **Implementación de Rutas Dinámicas:**
   - Se agregaron rutas específicas para podcasts y episodios.
 - **Contextos Globales:**
@@ -161,7 +169,6 @@ podcaster/
   - `usePodcastFilter` optimizado para evitar ciclos infinitos de renderizado.
 - **Pruebas Actualizadas:**
   - Tests adaptados para trabajar con contextos y rutas dinámicas.
-
 
 ### **Requisitos previos**
 
@@ -188,11 +195,12 @@ podcaster/
 
 - yarn build
 
-
 ## Conclusión
+
 Este proyecto demuestra cómo construir una SPA moderna utilizando tecnologías actuales como React, Vite, y SASS, aplicando patrones y principios sólidos para garantizar escalabilidad y mantenibilidad. ¡Gracias por revisar Podcaster! 🎉
 
 ## Próximos Pasos
+
 - Implementación de lazy-loading para cargar datos y optimizar el tiempo de carga inicial
 - Test para los componentes de PodcastDetail y EpisodeDetail
 - Diseño responsive adaptative

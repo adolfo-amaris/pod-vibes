@@ -11,7 +11,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        silenceDeprecations: ["legacy-js-api"],
+        silenceDeprecations: ['legacy-js-api'],
         additionalData: `
           @use "./src/shared/styles/_vars" as vars;
         `,
