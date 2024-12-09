@@ -13,11 +13,19 @@ const PopularPodcastsPage: React.FC = () => {
 
   // Mostrar mensaje de "Cargando" si el estado loading está activo
   if (podcasts.length === 0) {
-    return <p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando los podcasts más populares...</p>;
+    return (
+      <p style={{ textAlign: 'center', marginTop: '20px' }}>
+        Cargando los podcasts más populares...
+      </p>
+    );
   }
 
   if (error) {
-    return <p style={{ textAlign: 'center', marginTop: '20px', color: 'red' }}>{error}</p>;
+    return (
+      <p style={{ textAlign: 'center', marginTop: '20px', color: 'red' }}>
+        {error}
+      </p>
+    );
   }
   return (
     <div className="boxppal flex flex-column" role="podcast-list">

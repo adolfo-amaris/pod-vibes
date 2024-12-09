@@ -1,4 +1,4 @@
-import { safeTransformPodcast, transformPodcasts } from '../../../src/podcastManagement/infrastructure/transformers/podcastTransformer';
+import { safeTransformPodcast } from '../../../src/podcastManagement/infrastructure/transformers/podcastTransformer';
 import { Podcast } from '../../../src/podcastManagement/domain/entities/podcast';
 
 describe('safeTransformPodcast', () => {
@@ -13,7 +13,9 @@ describe('safeTransformPodcast', () => {
 
     const result = safeTransformPodcast(validPodcast);
 
-    expect(result).toEqual(new Podcast('123', 'Podcast A', 'Author A', 'image-a.jpg', 'Summary A'));
+    expect(result).toEqual(
+      new Podcast('123', 'Podcast A', 'Author A', 'image-a.jpg', 'Summary A')
+    );
   });
 
   it('debería manejar datos incompletos correctamente', () => {
@@ -49,6 +51,14 @@ describe('safeTransformPodcast', () => {
 
     const result = safeTransformPodcast(partialPodcast);
 
-    expect(result).toEqual(new Podcast('124', 'Podcast Parcial', 'Author Parcial', 'default-image-url', 'Sin resumen disponible'));
+    expect(result).toEqual(
+      new Podcast(
+        '124',
+        'Podcast Parcial',
+        'Author Parcial',
+        'default-image-url',
+        'Sin resumen disponible'
+      )
+    );
   });
 });
