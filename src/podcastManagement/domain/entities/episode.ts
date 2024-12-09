@@ -15,14 +15,16 @@ export class Episode {
   private validateFields(): void {
     if (!this.id) throw new Error('El ID del episodio es obligatorio.');
     if (!this.title) throw new Error('El título del episodio es obligatorio.');
-    if (!this.audioUrl) throw new Error('La URL del audio es obligatoria.');
+    if (!this.audioUrl || this.audioUrl.trim() === '') {
+      throw new Error('La URL del audio es obligatoria.');
+    }
   }
 
   // Método para formatear la duración del episodio
   public formatDuration(): string {
-    const minutes = Math.floor(this.duration / 60000);
-    const seconds = Math.floor((this.duration % 60000) / 1000);
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    const minutes = Math.floor(this.duration / 60); // Obtiene minutos enteros
+    const seconds = this.duration % 60; // Calcula los segundos restantes
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // Formatea los segundos
   }
 
   // Método estático para transformar datos de la API a una instancia de Episode
@@ -36,7 +38,7 @@ export class Episode {
       data.description || 'Descripción no disponible.',
       data.releaseDate || 'Fecha desconocida',
       data.duration || 0,
-      data.audioUrl || ''
+      data.audioUrl || 'URL no disponible' // Valor predeterminado válido
     );
   }
 }

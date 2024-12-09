@@ -11,7 +11,7 @@ export class GetPodcastDetailsUseCase {
 
   async execute(
     podcastId: string
-  ): Promise<{ podcast: Podcast; episodes: Episode[] }> {
+  ): Promise<{ podcast: Podcast | null; episodes: Episode[] }> {
     if (!podcastId) {
       throw new Error('El ID del podcast es requerido.');
     }

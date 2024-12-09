@@ -5,20 +5,25 @@ import {
 } from '../types/apiResponses';
 
 export const safeTransformPodcast = (
-  entry: PodcastAPIResponse
+  entry: PodcastAPIResponse | null | undefined
 ): Podcast | undefined => {
   try {
+    if (
+      !entry ||
+      !entry.id?.attributes?.['im:id'] ||
+      !entry['im:name']?.label ||
+      !entry['im:artist']?.label
+    ) {
+      throw new Error('Datos incompletos para crear el Podcast.');
+    }
+
     const id = entry.id.attributes['im:id'];
     const name = entry['im:name'].label;
     const artist = entry['im:artist'].label;
     const image =
-      entry['im:image'].find((img) => img.attributes.height === '170')?.label ||
-      '';
-    const summary = entry.summary.label;
-
-    if (!id || !name || !artist || !image || !summary) {
-      throw new Error('Datos incompletos para crear el Podcast.');
-    }
+      entry['im:image']?.find((img) => img.attributes.height === '170')?.label ||
+      'default-image-url';
+    const summary = entry.summary?.label || 'Sin resumen disponible';
 
     return new Podcast(id, name, artist, image, summary);
   } catch (error) {
