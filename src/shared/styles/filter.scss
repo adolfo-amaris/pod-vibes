@@ -15,6 +15,11 @@
   .boxsearch__input {
     margin-left: 30px;
     padding: 15px 10px;
-    width: 15vw;
+    width: 20vw;
+
+    @media (max-width: 600px) {
+      margin-left: 15px;
+      width: 50vw;
+    }
   }
 }
