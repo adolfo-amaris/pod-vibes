@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import { waitFor } from '@testing-library/dom';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
@@ -58,7 +59,12 @@ export default [
         it: true,
         describe: true,
         beforeEach: true,
+        afterEach: true,
         global: true,
+        afterAll: true,
+        beforeAll: true,
+        require: true,
+        waitFor: true,
       },
     },
     plugins: {
@@ -73,6 +79,31 @@ export default [
     files: ['**/*.{js,jsx,ts,tsx}'],
     rules: {
       ...prettier.rules,
+    },
+  },
+  {
+    files: ['setupTests.ts'], // Específicamente para setupTests.ts
+    languageOptions: {
+      globals: {
+        jest: true,
+        test: true,
+        expect: true,
+        it: true,
+        describe: true,
+        beforeEach: true,
+        afterEach: true,
+        afterAll: true,
+        beforeAll: true,
+        global: true,
+        require: true,
+        waitFor: true,
+      },
+    },
+    plugins: {
+      jest: jestPlugin,
+    },
+    rules: {
+      ...jestPlugin.configs.recommended.rules, // Usa las reglas recomendadas de Jest
     },
   },
 ];

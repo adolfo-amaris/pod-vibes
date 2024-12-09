@@ -21,8 +21,8 @@ export const safeTransformPodcast = (
     const name = entry['im:name'].label;
     const artist = entry['im:artist'].label;
     const image =
-      entry['im:image']?.find((img) => img.attributes.height === '170')?.label ||
-      'default-image-url';
+      entry['im:image']?.find((img) => img.attributes.height === '170')
+        ?.label || 'default-image-url';
     const summary = entry.summary?.label || 'Sin resumen disponible';
 
     return new Podcast(id, name, artist, image, summary);
