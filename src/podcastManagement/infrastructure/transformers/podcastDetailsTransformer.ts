@@ -34,8 +34,8 @@ export const transformPodcastDetails = (
         episode.trackName || 'Untitled',
         episode.description || 'No description available',
         episode.releaseDate || 'Unknown', // Mantener como string
-        episode.trackTimeMillis || 0,
-        episode.episodeUrl || ''
+        Math.floor((episode.trackTimeMillis || 0) / 1000), // Convertir milisegundos a segundos
+        episode.episodeUrl || 'URL no disponible' // Asignar valor predeterminado
       );
     })
     .filter((episode) => episode !== null);

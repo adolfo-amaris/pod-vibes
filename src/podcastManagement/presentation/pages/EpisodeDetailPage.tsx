@@ -59,7 +59,7 @@ const EpisodeDetailPage: React.FC = () => {
         className="boxepisode__description"
         dangerouslySetInnerHTML={{ __html: episode.description }}
       ></div>
-      <audio controls>
+      <audio controls aria-label="Reproductor de audio">
         <source src={episode.audioUrl} type="audio/mpeg" />
         Tu navegador no soporta el reproductor de audio.
       </audio>

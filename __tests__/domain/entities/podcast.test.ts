@@ -1,49 +1,95 @@
-import { transformPodcasts } from './../../../src/podcastManagement/infrastructure/transformers/podcastTransformer';
-import { PodcastFeedAPIResponse } from './../../../src/podcastManagement/infrastructure/types/apiResponses';
+import { Podcast } from "../../../src/podcastManagement/domain/entities/podcast";
 
-describe('transformPodcasts', () => {
-  it('debería transformar una respuesta válida de la API en una lista de Podcasts', () => {
-    const apiResponse: PodcastFeedAPIResponse = {
-      feed: {
-        entry: [
-          {
-            id: { attributes: { 'im:id': '1' } },
-            'im:name': { label: 'Tech Talks' },
-            'im:image': [{ label: 'url', attributes: { height: '170' } }],
-            'im:artist': { label: 'John Doe' },
-            summary: { label: 'A podcast about tech' },
-          },
-        ],
-      },
-    };
+describe("Entidad Podcast", () => {
+  describe("Constructor y Validaciones", () => {
+    it("debería crear una entidad Podcast con datos válidos", () => {
+      const podcast = new Podcast(
+        "123",
+        "Charlas Tecnológicas",
+        "Autor Tecnológico",
+        "url-imagen.jpg",
+        "Explorando lo último en tecnología"
+      );
 
-    const podcasts = transformPodcasts(apiResponse);
+      expect(podcast.id).toBe("123");
+      expect(podcast.title).toBe("Charlas Tecnológicas");
+      expect(podcast.author).toBe("Autor Tecnológico");
+      expect(podcast.image).toBe("url-imagen.jpg");
+      expect(podcast.summary).toBe("Explorando lo último en tecnología");
+    });
 
-    expect(podcasts).toHaveLength(1);
-    expect(podcasts[0].id).toBe('1');
-    expect(podcasts[0].title).toBe('Tech Talks');
-    expect(podcasts[0].author).toBe('John Doe');
-    expect(podcasts[0].image).toBe('url');
-    expect(podcasts[0].summary).toBe('A podcast about tech');
+    it("debería lanzar un error si el ID está vacío", () => {
+      expect(() => {
+        new Podcast("", "Título", "Autor", "imagen.jpg", "Resumen");
+      }).toThrow("El ID del podcast es obligatorio.");
+    });
+
+    it("debería lanzar un error si el título está vacío", () => {
+      expect(() => {
+        new Podcast("123", "", "Autor", "imagen.jpg", "Resumen");
+      }).toThrow("El título del podcast es obligatorio.");
+    });
+
+    it("debería lanzar un error si el autor está vacío", () => {
+      expect(() => {
+        new Podcast("123", "Título", "", "imagen.jpg", "Resumen");
+      }).toThrow("El autor del podcast es obligatorio.");
+    });
+
+    it("debería lanzar un error si la URL de la imagen está vacía", () => {
+      expect(() => {
+        new Podcast("123", "Título", "Autor", "", "Resumen");
+      }).toThrow("La URL de la imagen es obligatoria.");
+    });
+
+    it("debería lanzar un error si el resumen está vacío", () => {
+      expect(() => {
+        new Podcast("123", "Título", "Autor", "imagen.jpg", "");
+      }).toThrow("El resumen del podcast es obligatorio.");
+    });
   });
 
-  it('debería filtrar podcasts con datos incompletos', () => {
-    const apiResponse: PodcastFeedAPIResponse = {
-      feed: {
-        entry: [
-          {
-            id: { attributes: { 'im:id': '1' } },
-            'im:name': { label: 'Tech Talks' },
-            'im:image': [],
-            'im:artist': { label: 'John Doe' },
-            summary: { label: '' },
-          },
-        ],
-      },
-    };
+  describe("Método getSafeImageUrl", () => {
+    it("debería devolver la URL de la imagen si está definida", () => {
+      const podcast = new Podcast(
+        "123",
+        "Título",
+        "Autor",
+        "imagen.jpg",
+        "Resumen"
+      );
 
-    const podcasts = transformPodcasts(apiResponse);
+      expect(podcast.getSafeImageUrl()).toBe("imagen.jpg");
+    });
 
-    expect(podcasts).toHaveLength(0);
   });
+
+  describe("Propiedad formattedTitle", () => {
+    it("debería devolver el título en mayúsculas", () => {
+      const podcast = new Podcast(
+        "123",
+        "Título en Minúsculas",
+        "Autor",
+        "imagen.jpg",
+        "Resumen"
+      );
+
+      expect(podcast.formattedTitle).toBe("TÍTULO EN MINÚSCULAS");
+    });
+  });
+
+  describe("Método getTruncatedTitle", () => {
+    it("debería devolver el título completo si es más corto que el máximo", () => {
+      const podcast = new Podcast(
+        "123",
+        "Título corto",
+        "Autor",
+        "imagen.jpg",
+        "Resumen"
+      );
+
+      expect(podcast.getTruncatedTitle(20)).toBe("Título corto");
+    });
+  });
+  
 });
