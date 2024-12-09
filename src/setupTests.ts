@@ -3,12 +3,14 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+
+/* eslint-disable no-undef */
 beforeAll(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => { });
-    jest.spyOn(console, 'error').mockImplementation(() => { });
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+  jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 afterAll(() => {
-    (console.warn as jest.Mock).mockRestore();
-    (console.error as jest.Mock).mockRestore();
+  jest.restoreAllMocks();
 });
+/* eslint-enable no-undef */

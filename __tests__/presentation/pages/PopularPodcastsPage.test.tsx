@@ -5,9 +5,12 @@ import PopularPodcastsPage from './../../../src/podcastManagement/presentation/p
 import { Podcast } from './../../../src/podcastManagement/domain/entities/podcast';
 import { LoadingContext } from './../../../src/shared/context/LoadingContext';
 
-jest.mock('../../../src/podcastManagement/presentation/hooks/usePopularPodcasts', () => ({
-  usePopularPodcasts: jest.fn(),
-}));
+jest.mock(
+  '../../../src/podcastManagement/presentation/hooks/usePopularPodcasts',
+  () => ({
+    usePopularPodcasts: jest.fn(),
+  })
+);
 
 const mockPodcasts: Podcast[] = [
   new Podcast('1', 'Podcast A', 'Author A', 'image-a.jpg', 'Summary A'),
@@ -31,7 +34,11 @@ describe('PopularPodcastsPage', () => {
   });
 
   it('debería mostrar un mensaje de carga al iniciar', async () => {
-    const { usePopularPodcasts } = require('../../../src/podcastManagement/presentation/hooks/usePopularPodcasts');
+    /* eslint-disable @typescript-eslint/no-require-imports */
+    const {
+      usePopularPodcasts,
+    } = require('../../../src/podcastManagement/presentation/hooks/usePopularPodcasts');
+    /* eslint-enable @typescript-eslint/no-require-imports */
     usePopularPodcasts.mockReturnValue({
       podcasts: [],
       error: null,
@@ -39,11 +46,17 @@ describe('PopularPodcastsPage', () => {
 
     renderWithProviders(true);
 
-    expect(screen.getByText('Cargando los podcasts más populares...')).toBeInTheDocument();
+    expect(
+      screen.getByText('Cargando los podcasts más populares...')
+    ).toBeInTheDocument();
   });
 
   it('debería cargar y mostrar los podcasts desde el hook', async () => {
-    const { usePopularPodcasts } = require('../../../src/podcastManagement/presentation/hooks/usePopularPodcasts');
+    /* eslint-disable @typescript-eslint/no-require-imports */
+    const {
+      usePopularPodcasts,
+    } = require('../../../src/podcastManagement/presentation/hooks/usePopularPodcasts');
+    /* eslint-enable @typescript-eslint/no-require-imports */
     usePopularPodcasts.mockReturnValue({
       podcasts: mockPodcasts,
       error: null,
@@ -57,7 +70,12 @@ describe('PopularPodcastsPage', () => {
   });
 
   it('debería navegar al detalle del podcast al hacer clic en una tarjeta', async () => {
-    const { usePopularPodcasts } = require('../../../src/podcastManagement/presentation/hooks/usePopularPodcasts');
+    /* eslint-disable @typescript-eslint/no-require-imports */
+    const {
+      usePopularPodcasts,
+    } = require('../../../src/podcastManagement/presentation/hooks/usePopularPodcasts');
+    /* eslint-enable @typescript-eslint/no-require-imports */
+
     usePopularPodcasts.mockReturnValue({
       podcasts: mockPodcasts, // Asegúrate de que hay dos podcasts en los datos
       error: null,
